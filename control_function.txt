@@ -30,17 +30,17 @@ import delimited "https://raw.githubusercontent.com/isaacmeza/control_function_e
 <</dd_do>>
 ~~~~
 
-To motivate the use of control function methods, we contrast it with usual 2sls estimator
+To motivate the use of control function methods, we contrast it with the usual 2sls estimator. We cluster the errors at the level of randomization and use basic controls.
 
 ~~~~
 <<dd_do>>
-ivregress 2sls seconcilio calc d_anio* d_num* d_junta* phase (p_actor calc_x_pactor = i.time_hr##i.altT), vce(cluster cluster_v)   
+ivregress 2sls seconcilio calc d_anio* d_num* d_junta* phase (p_actor calc_x_pactor = i.time_hr##i.calc), vce(cluster cluster_v)   
 
 <</dd_do>>
 ~~~~
-We cluster the errors at the level of randomization and use basic controls.
 
-We are interested in the coefficient of the interaction **calc_x_pactor**. We find an effect of xxx, however we cannot reject the null of no significance. The advantage of CF methods is to achieve greater efficiency exploting the binary nature of the EEV, in this case 'presence of the employee'.
+
+We are interested in the coefficient of the interaction **calc_x_pactor**. We find an effect of <<dd_display: %9.3f _b[calc_x_pactor]>>, however we cannot reject the null of no significance (we have a std. error of <<dd_display: %9.2f _se[calc_x_pactor]>>). The advantage of CF methods is to achieve greater efficiency exploting the binary nature of the EEV, in this case 'presence of the employee'.
 
 
 ### Constrained model - Constant Coefficients
@@ -65,21 +65,21 @@ We also allow interactions between $x_j$ and the treatment $t_j$.
 
 
 
-
-
 ## Two-step CF
 
 For the two-step control function procedure, probit estimates of the (EEV) 
 $$\Pr(T_j=1\;|\;w_j) = \Phi(w_j\gamma)$$
 are obtained in the first stage.
 From these estimates we obtain "generalized residuals" 
-$$r_j = t_j(\frac{\phi(w_j\hat{gamma})}{\Phi(w_j\hat{gamma})})+(1-t_j)(-\frac{\phi(w_j\hat{gamma})}{1-\Phi(w_j\hat{gamma})})$$
+$$r_j = t_j(\frac{\phi(w_j\hat{\gamma})}{\Phi(w_j\hat{\gamma})})+(1-t_j)(-\frac{\phi(w_j\hat{\gamma})}{1-\Phi(w_j\hat{\gamma})})$$
 
 then
-$$\mathbb{E}[y_j\;|\;t_j,x_j,w_j]  = x_j\beta +\deltat_j+\rho\sigma r_j$$
+$$\mathbb{E}[y_j\;|\;t_j,x_j,w_j]  = x_j\beta +\delta t_j+\rho\sigma r_j$$
 $$\operatorname{Var}(y_j\;|\;t_j,x_j,w_j) = \sigma^2(1-\rho^2(r_j(r_j+w_j\hat\gamma)))$$
 
 the two-step estimates of $\beta$ and $\delta$ are obtained by augmenting the regression with the generalized residuals. The t statistic on $r_j$, made robust to heteroskedasticity, is a valid test of the null that $t_j$ is exogenous.
+
+### Estimation
 
 We "manually" implement the previous approach as follows:
 
@@ -90,6 +90,7 @@ We "manually" implement the previous approach as follows:
 probit p_actor calc i.time_hr d_anio* d_num* d_junta* phase
 <</dd_do>>
 ~~~~
+
  obtain generalized residual to form the augmented regression in the second stage
 ~~~~
 <<dd_do>>
@@ -106,14 +107,15 @@ gen gen_resid_pr = cond(p_actor == 1, normalden(xb)/normal(xb), -normalden(xb)/(
 ~~~~
 <<dd_do>>
 *Second stage
-reg seconcilio calc p_actor calc_x_pactor gen_resid_p d_anio* d_num* d_junta* phase , vce(bootstrap, cluster(cluster_v) rep(1000) bca)
+reg seconcilio calc p_actor calc_x_pactor gen_resid_p d_anio* d_num* d_junta* phase , vce(bootstrap, cluster(cluster_v) rep(100) bca)
 <</dd_do>>
 ~~~~
 
+Note that by exploting the binary nature of the endogenous variable, we achieve more efficiency. The coefficient of the interaction is <<dd_display: %9.3f _b[calc_x_pactor]>>, which is smaller than the 2sls IV estimate, and we get significance at the <<dd_display: %9.3f 200*ttail(e(N)-e(df_m), abs(_b[calc_x_pactor]/_se[calc_x_pactor]))>>% level.
 
-As suggested by @Wooldridge, when the EEV $t_j$ interacts with $x_j$ there are other natural choices for IVs: Use the interactions $\Phi(w_j\hat\gamma)x_j$ where $$\Phi(w_j\hat\gamma)$ are the predicted probabilities of $t_j$. This IV estimator has a theoretical advantage over the CF estimator, at least if one assumes the linear model with constant coefficients is the correct specification: The IV estimator is generally consistent even if the probit model is misspecified
+As suggested by @Wooldridge, when the EEV $t_j$ interacts with $x_j$ there are other natural choices for IVs: Use the interactions $\Phi(w_j\hat\gamma)x_j$ where $\Phi(w_j\hat\gamma)$ are the predicted probabilities of $t_j$. This IV estimator has a theoretical advantage over the CF estimator, at least if one assumes the linear model with constant coefficients is the correct specification: The IV estimator is generally consistent even if the probit model is misspecified
 
-
+### Estimation
 
 ### General potential outcome model - Correlated Random Coefficient
 
@@ -126,9 +128,7 @@ As suggested by @Wooldridge, when the EEV $t_j$ interacts with $x_j$ there are o
  
  
  
-```
-ivregress 2sls seconcilio altT d_anio* d_num* d_junta* phase (p_actor interactT = i.time_hr##i.altT), vce(cluster cluster_v)   
-```
+
 
 
 
