@@ -14,10 +14,117 @@ MathJax.Hub.Config({
 ## Isaac M
 
 
+
 ~~~~
 <<dd_do>>
-webuse auto, clear
-summarize price
+import delimited "https://raw.githubusercontent.com/isaacmeza/control_function_example/main/DB/cf_pactor_sett.csv", clear  case(preserve)
+
+
+
+
+
+ivregress 2sls seconcilio altT  d_anio* d_num* d_junta* i.phase (p_actor  = i.time_hr), first
+
+
+   etregress seconcilio altT i.anioControl i.numActores i.junta i.phase , treat(p_actor = i.time_hr altT i.anioControl i.numActores i.junta i.phase) twostep first
+   
+*Probit (FS)
+probit p_actor i.altT time_hr2-time_hr8 i.anioControl i.numActores i.junta i.phase if e(sample)
+cap drop xb
+predict xb, xb
+*Generalized residuals
+cap drop gen_resid_pr
+gen gen_resid_pr = cond(p_actor == 1, normalden(xb)/normal(xb), -normalden(xb)/(1-normal(xb)))	
+
+*CF
+*Probit - Interaction
+
+eststo clear
+
+
+
+ivregress 2sls seconcilio altT   i.anioControl i.numActores i.junta i.phase (p_actor interactT = i.time_hr##i.altT), first
+gen esample = e(sample)
+
+eststo : reg seconcilio altT p_actor   i.anioControl i.numActores i.junta i.phase gen_resid_p  
+
+
+eststo : reg seconcilio altT i.p_actor##c.gen_resid_p   i.anioControl i.numActores i.junta i.phase   
+
+
+
+eststo : reg seconcilio altT p_actor interactT  i.anioControl i.numActores i.junta i.phase gen_resid_p 
+
+
+
+*CRC
+
+eststo : reg seconcilio altT i.p_actor##c.gen_resid_p interactT  i.anioControl i.numActores i.junta i.phase 
+
+
+
+
+   
+
+
+
+   etregress seconcilio i.altT##i.p_actor i.anioControl i.numActores i.junta i.phase , treat(p_actor = i.time_hr altT i.anioControl i.numActores i.junta i.phase) twostep  
+
+   etregress seconcilio i.altT##i.p_actor i.anioControl i.numActores i.junta i.phase , treat(p_actor = i.time_hr altT i.anioControl i.numActores i.junta i.phase)  cfunction  poutcomes
+   
+   etregress seconcilio i.altT##i.p_actor i.anioControl i.numActores i.junta i.phase , treat(p_actor = i.time_hr altT i.anioControl i.numActores i.junta i.phase)    poutcomes
+   
+    etregress seconcilio i.altT##i.p_actor i.anioControl i.numActores i.junta i.phase , treat(p_actor = i.time_hr altT i.anioControl i.numActores i.junta i.phase)  cfunction  
+   
+   etregress seconcilio i.altT##i.p_actor i.anioControl i.numActores i.junta i.phase , treat(p_actor = i.time_hr altT i.anioControl i.numActores i.junta i.phase)      
+   
+   
+   
+   
+reg p_actor  i.altT##i.time_hr i.anioControl i.numActores i.junta i.phase if esample
+cap drop p1
+predict p1
+reg interactT i.altT##i.time_hr i.anioControl i.numActores i.junta i.phase if esample
+cap drop p2
+predict p2
+
+reg seconcilio altT p1 p2 i.anioControl i.numActores i.junta i.phase if esample
+
+
+ivregress 2sls seconcilio altT   i.anioControl i.numActores i.junta i.phase (p_actor  = i.time_hr), first
+
+
+
+probit p_actor  i.altT time_hr2-time_hr8 d_anio* d_num* d_junta* phase
+cap drop p1
+predict p1
+
+reg seconcilio altT p1 d_anio* d_num* d_junta* phase
+
+
+cap drop pint
+su altT 
+gen pint = p1*(altT-`r(mean)')
+reg seconcilio altT p1 pint d_anio* d_num* d_junta* phase
+
+ 
+ivtreatreg seconcilio p_actor altT d_anio* d_num* d_junta* phase , model(direct-2sls) iv(time_hr2-time_hr8) hetero(altT) 
+   
+ivtreatreg seconcilio p_actor altT d_anio* d_num* d_junta* phase, model(probit-ols) iv(time_hr2-time_hr8) hetero(altT) 
+   
+di   e(ate)   
+di   e(atet)
+di  e(atent)
+
+
+ivtreatreg seconcilio p_actor altT d_anio* d_num* d_junta* phase, model(probit-2sls) iv(time_hr2-time_hr8) hetero(altT) 
+
+
+ivtreatreg seconcilio p_actor altT d_anio* d_num* d_junta* phase, model(heckit) iv(time_hr2-time_hr8) hetero(altT) 
+
+ivtreatreg seconcilio p_actor altT d_anio* d_num* d_junta* phase, model(heckit) iv(time_hr2-time_hr8) hetero(altT) 
+
+
 <</dd_do>>
 ~~~~
 
