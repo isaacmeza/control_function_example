@@ -1,59 +1,299 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Isaac M" />
+  <meta name="dcterms.date" content="2022-10-03" />
+  <title>Control Function Methods</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+    }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+<style>
+/* CSS for Markstat 2.0 using Pandoc 2.0 */
+body{padding:14px 28px; max-width:45em;}
+body, table {font-family: Helvetica, Arial, Sans-serif; font-size: 14px;}
+h1, h2, h3, h4 {font-weight: normal; color: #3366cc}
+h1 {font-size: 200%;}
+h2 {font-size: 150%;}
+h3 {font-size: 120%;}
+h4 {font-size: 100%; font-weight:bold}
+img.center {display:block; margin-left:auto; margin-right:auto}
+.small{font-size:8pt;}
+a {color: black;}
+a:visited {color: #808080;}
+a.plain {text-decoration:none;}
+a.plain:hover {text-decoration:underline;}
+.em {font-weight:bold;}
+pre, code {font-family: "lucida console", monospace;}
+pre.stata {font-size:13px; line-height:13px;}
+pre {padding:8px; border:1px solid #c0c0c0; border-radius:8px; background-color:#fdfdfd;}
+code {color:#3366cc; background-color:#fafafa;}
+pre code { color:black; background-color:white}
+/* Added for Pandoc */
+figure > img, div.figure > img {display:block; margin:auto}
+figcaption, p.caption {text-align:center; font-weight:bold; color:#3366cc;}
+h1.title {text-align:center; margin-bottom:0}
+p.author, h2.author {font-style:italic; text-align:center;margin-top:4px;margin-bottom:0}
+p.date, h3.date {text-align:center;margin-top:4px; margin-bottom:0}
+/* Tables*/
+table { margin:auto; border-collapse:collapse; }
+table caption { margin-bottom:1ex;}
+td {padding:0 0 0 0} /* override */
+table:not([class]) th { padding:4px 6px } 
+table:not([class]) td { padding:4px 6px } 
+table:not([class]) thead tr:first-child th {border-top:1px solid black; padding-top:6px}
+table:not([class]) thead tr:last-child  th {padding-bottom:6px}
+table:not([class]) tbody tr:first-child td {border-top:1px solid black; padding-top:6px}
+table:not([class]) tbody tr:last-child  td {padding-bottom:6px;}
+table:not([class]) tbody:last-child tr:last-child td {border-bottom:1px solid black;}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Control Function Methods</h1>
+<p class="author">Isaac M</p>
+<p class="date">10/03/2022</p>
+</header>
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
   tex2jax: {
-	inlineMath: [['$','$']],
-	processEscapes: true
-	}
+    inlineMath: [['$','$']],
+    processEscapes: true
+    }
 });
 </script>
 <script type="text/javascript" async 
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML">
 </script>
-<h1><a href="#control-function" id="control-function">Control Function</a></h1>
-<h3><a href="#isaac-m" id="isaac-m">Isaac M</a></h3>
-<hr />
-<p>In this note we study control function (CF) methods. We use data from a RCT in MCLC @sadka, to study the effect of statistical information ($x_j$) provided to dismissed workers <em>when the worker is present</em> ($t_j$)  on settlement rates ($y_j$).</p>
-<p>The calculator arm ($x_j$) is random, but we might be concerned with the endogeneity of employee presence ($t_j$).  While this is fundamentally an external validity issue (since the calculator is random conditional on the plaintiff&rsquo;s presence), it is relevant for how we interpret the null treatment effect when the employee is not present. To address any concern with the endoegeneity of the plaintiff&rsquo;s presence, we use control function approaches. We use time of hearing ($w_j$) as instrument.</p>
-<pre><code>. import delimited &quot;https://raw.githubusercontent.com/isaacmeza/control_function_example/main/DB/cf_pactor_sett.csv&quot;
-&gt; , clear  case(preserve)
+<p>In this note we study control function (CF) methods. We use data from
+a RCT in MCLC <span class="citation" data-cites="sadka">Sadka, Seira,
+and Woodruff (2018)</span>, to study the effect of statistical
+information (<span class="math inline">\(x_j\)</span>) provided to
+dismissed workers <em>when the worker is present</em> (<span
+class="math inline">\(t_j\)</span>) on settlement rates (<span
+class="math inline">\(y_j\)</span>).</p>
+<p>The calculator arm (<span class="math inline">\(x_j\)</span>) is
+random, but we might be concerned with the endogeneity of employee
+presence (<span class="math inline">\(t_j\)</span>). While this is
+fundamentally an external validity issue (since the calculator is random
+conditional on the plaintiff’s presence), it is relevant for how we
+interpret the null treatment effect when the employee is not present. To
+address any concern with the endoegeneity of the plaintiff’s presence,
+we use control function approaches. We use time of hearing (<span
+class="math inline">\(w_j\)</span>) as instrument.</p>
+<pre class='stata'>. import delimited "https://raw.githubusercontent.com/isaacmeza/control_function_example/main/DB/cf_pactor_sett.csv"
+> , clear  case(preserve)
 (encoding automatically selected: ISO-8859-1)
-(19 vars, 1,732 obs)
-
-</code></pre>
-<p>To motivate the use of control function methods, we contrast it with the usual 2sls estimator. We cluster the errors at the level of randomization and use basic controls.</p>
-<pre><code>. ivregress 2sls seconcilio calc d_anio* d_num* d_junta* phase (p_actor calc_x_pactor = i.time_hr##i.calc), vce(clus
-&gt; ter cluster_v)   
+(19 vars, 1,723 obs)
+</pre>
+<p>To motivate the use of control function methods, we contrast it with
+the usual 2sls estimator. We cluster the errors at the level of
+randomization and use basic controls.</p>
+<pre class='stata'>. ivregress 2sls seconcilio calc d_anio* d_num* d_junta* phase (p_actor calc_x_pactor = i.time_hr##i.calc), vce(clus
+> ter cluster_v)   
 note: 1.calc omitted because of collinearity.
 
 Instrumental variables 2SLS regression            Number of obs   =      1,723
                                                   Wald chi2(16)   =     164.80
-                                                  Prob &gt; chi2     =     0.0000
+                                                  Prob > chi2     =     0.0000
                                                   R-squared       =     0.0722
                                                   Root MSE        =     .34909
 
                              (Std. err. adjusted for 700 clusters in cluster_v)
--------------------------------------------------------------------------------
-              |               Robust
-   seconcilio | Coefficient  std. err.      z    P&gt;|z|     [95% conf. interval]
---------------+----------------------------------------------------------------
-      p_actor |   .3764376   .3203994     1.17   0.240    -.2515337    1.004409
-calc_x_pactor |   .1582707   .4313301     0.37   0.714    -.6871207    1.003662
-         calc |   .0047817   .0828154     0.06   0.954    -.1575335    .1670969
-     d_anioC2 |  -.0431707   .0353022    -1.22   0.221    -.1123618    .0260204
-     d_anioC3 |  -.0781149   .0601744    -1.30   0.194    -.1960546    .0398248
-     d_anioC4 |   -.027374    .044538    -0.61   0.539    -.1146669    .0599189
-     d_anioC5 |  -.0537756   .0471267    -1.14   0.254    -.1461422     .038591
-     d_anioC6 |  -.0073023   .0640302    -0.11   0.909    -.1327992    .1181947
-     d_anioC7 |   .0155657   .0840653     0.19   0.853    -.1491993    .1803308
-       d_num2 |    .012786   .0427567     0.30   0.765    -.0710155    .0965876
-       d_num3 |  -.0249497   .0347275    -0.72   0.472    -.0930144     .043115
-     d_junta2 |  -.0111277   .0446982    -0.25   0.803    -.0987345    .0764792
-     d_junta3 |  -.0188805   .0351032    -0.54   0.591    -.0876814    .0499205
-     d_junta4 |   .2024814   .0379855     5.33   0.000     .1280312    .2769315
-     d_junta5 |  -.0636965   .0363869    -1.75   0.080    -.1350135    .0076205
-        phase |   .0231708   .0544132     0.43   0.670     -.083477    .1298187
-        _cons |   .0075994   .1011457     0.08   0.940    -.1906425    .2058412
--------------------------------------------------------------------------------
+──────────────┬────────────────────────────────────────────────────────────────
+              │               Robust
+   seconcilio │ Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+──────────────┼────────────────────────────────────────────────────────────────
+      p_actor │   .3764376   .3203994     1.17   0.240    -.2515337    1.004409
+calc_x_pactor │   .1582707   .4313301     0.37   0.714    -.6871207    1.003662
+         calc │   .0047817   .0828154     0.06   0.954    -.1575335    .1670969
+     d_anioC2 │  -.0431707   .0353022    -1.22   0.221    -.1123618    .0260204
+     d_anioC3 │  -.0781149   .0601744    -1.30   0.194    -.1960546    .0398248
+     d_anioC4 │   -.027374    .044538    -0.61   0.539    -.1146669    .0599189
+     d_anioC5 │  -.0537756   .0471267    -1.14   0.254    -.1461422     .038591
+     d_anioC6 │  -.0073023   .0640302    -0.11   0.909    -.1327992    .1181947
+     d_anioC7 │   .0155657   .0840653     0.19   0.853    -.1491993    .1803308
+       d_num2 │    .012786   .0427567     0.30   0.765    -.0710155    .0965876
+       d_num3 │  -.0249497   .0347275    -0.72   0.472    -.0930144     .043115
+     d_junta2 │  -.0111277   .0446982    -0.25   0.803    -.0987345    .0764792
+     d_junta3 │  -.0188805   .0351032    -0.54   0.591    -.0876814    .0499205
+     d_junta4 │   .2024814   .0379855     5.33   0.000     .1280312    .2769315
+     d_junta5 │  -.0636965   .0363869    -1.75   0.080    -.1350135    .0076205
+        phase │   .0231708   .0544132     0.43   0.670     -.083477    .1298187
+        _cons │   .0075994   .1011457     0.08   0.940    -.1906425    .2058412
+──────────────┴────────────────────────────────────────────────────────────────
 Instrumented: p_actor calc_x_pactor
  Instruments: calc d_anioC2 d_anioC3 d_anioC4 d_anioC5 d_anioC6 d_anioC7
               d_num2 d_num3 d_junta2 d_junta3 d_junta4 d_junta5 phase
@@ -61,69 +301,102 @@ Instrumented: p_actor calc_x_pactor
               8.time_hr 2.time_hr#1.calc 3.time_hr#1.calc 4.time_hr#1.calc
               5.time_hr#1.calc 6.time_hr#1.calc 7.time_hr#1.calc
               8.time_hr#1.calc
-
-. 
-</code></pre>
-<p>We are interested in the coefficient of the interaction <strong>calc_x_pactor</strong>. We find an effect of      0.16, however we cannot reject the null of no significance (we have a std. error of      0.43). The advantage of CF methods is to achieve greater efficiency exploting the binary nature of the EEV, in this case &lsquo;presence of the employee&rsquo;.</p>
-<h3><a href="#constrained-model-constant-coefficients" id="constrained-model-constant-coefficients">Constrained model - Constant Coefficients</a></h3>
-<p>The model of interest is $$ y_j = x_j\beta +\delta t_j+\epsilon_j$$</p>
-<p>where $t_j$ is a binary-treatment variable generated by an unobservable latent model: $$t_j = 1[w_j\gamma + u_j&gt;0]$$ and $\epsilon$, $u$ are bivariate normal with mean zero and covariance matrix</p>
-<p>$$ \begin{bmatrix} \sigma^2 &amp; \rho\sigma \end{bmatrix}$$ $$ \begin{bmatrix}\rho\sigma &amp; 1 \end{bmatrix}$$</p>
-<p>We also allow interactions between $x_j$ and the treatment $t_j$.</p>
-<h2><a href="#two-step-cf" id="two-step-cf">Two-step CF</a></h2>
-<p>For the two-step control function procedure, probit estimates of the (EEV) $$\Pr(T_j=1;|;w_j) = \Phi(w_j\gamma)$$ are obtained in the first stage. From these estimates we obtain &ldquo;generalized residuals&rdquo; $$r_j = t_j(\frac{\phi(w_j\hat{\gamma})}{\Phi(w_j\hat{\gamma})})+(1-t_j)(-\frac{\phi(w_j\hat{\gamma})}{1-\Phi(w_j\hat{\gamma})})$$</p>
-<p>then $$\mathbb{E}[y_j;|;t_j,x_j,w_j]  = x_j\beta +\delta t_j+\rho\sigma r_j$$ $$\operatorname{Var}(y_j;|;t_j,x_j,w_j) = \sigma^2(1-\rho^2(r_j(r_j+w_j\hat\gamma)))$$</p>
-<p>the two-step estimates of $\beta$ and $\delta$ are obtained by augmenting the regression with the generalized residuals. The t statistic on $r_j$, made robust to heteroskedasticity, is a valid test of the null that $t_j$ is exogenous.</p>
-<h3><a href="#estimation" id="estimation">Estimation</a></h3>
-<p>We &ldquo;manually&rdquo; implement the previous approach as follows:</p>
-<p>1) Estimate first stage using probit</p>
-<pre><code>. *Probit (FS)
+</pre>
+<p>We are interested in the coefficient of the interaction
+<strong>calc_x_pactor</strong>. We find an effect of &lt;&lt;dd_display:
+%9.3f _b[calc_x_pactor]&gt;&gt;, however we cannot reject the null of no
+significance (we have a std. error of &lt;&lt;dd_display: %9.2f
+_se[calc_x_pactor]&gt;&gt;). The advantage of CF methods is to achieve
+greater efficiency exploting the binary nature of the EEV, in this case
+‘presence of the employee’.</p>
+<h3 id="constrained-model---constant-coefficients">Constrained model -
+Constant Coefficients</h3>
+<p>The model of interest is <span class="math display">\[ y_j = x_j\beta
++\delta t_j+\epsilon_j\]</span></p>
+<p>where <span class="math inline">\(t_j\)</span> is a binary-treatment
+variable generated by an unobservable latent model: <span
+class="math display">\[t_j = 1[w_j\gamma + u_j&gt;0]\]</span> and <span
+class="math inline">\(\epsilon\)</span>, <span
+class="math inline">\(u\)</span> are bivariate normal with mean zero and
+covariance matrix</p>
+<p><span class="math display">\[ \begin{bmatrix} \sigma^2
+&amp; \rho\sigma
+\end{bmatrix}\]</span> <span class="math display">\[
+\begin{bmatrix}\rho\sigma &amp; 1
+\end{bmatrix}\]</span></p>
+<p>We also allow interactions between <span
+class="math inline">\(x_j\)</span> and the treatment <span
+class="math inline">\(t_j\)</span>.</p>
+<h4 id="two-step-cf">Two-step CF</h4>
+<p>For the two-step control function procedure, probit estimates of the
+(EEV) <span class="math display">\[\Pr(T_j=1|w_j) =
+\Phi(w_j\gamma)\]</span> are obtained in the first stage. From these
+estimates we obtain “generalized residuals” <span
+class="math display">\[r_j =
+t_j(\frac{\phi(w_j\hat{\gamma})}{\Phi(w_j\hat{\gamma})})+(1-t_j)(-\frac{\phi(w_j\hat{\gamma})}{1-\Phi(w_j\hat{\gamma})})\]</span></p>
+<p>then <span class="math display">\[\mathbb{E}[y_j|t_j,x_j,w_j]  =
+x_j\beta +\delta t_j+\rho\sigma r_j\]</span> <span
+class="math display">\[\operatorname{Var}(y_j|t_j,x_j,w_j) =
+\sigma^2(1-\rho^2(r_j(r_j+w_j\hat{\gamma})))\]</span></p>
+<p>the two-step estimates of <span class="math inline">\(\beta\)</span>
+and <span class="math inline">\(\delta\)</span> are obtained by
+augmenting the regression with the generalized residuals, thus the
+regressors become <span class="math inline">\([x \quad t \quad
+r]\)</span>. The t statistic on <span
+class="math inline">\(r_j\)</span>, made robust to heteroskedasticity,
+is a valid test of the null that <span
+class="math inline">\(t_j\)</span> is exogenous.</p>
+<p>We “manually” implement the previous approach as follows:</p>
+<ol type="1">
+<li>Estimate first stage using probit</li>
+</ol>
+<pre class='stata'>. *Probit (FS)
 . probit p_actor calc i.time_hr d_anio* d_num* d_junta* phase
 
-Iteration 0:   log likelihood = -833.25244  
-Iteration 1:   log likelihood = -798.71826  
-Iteration 2:   log likelihood = -797.69333  
-Iteration 3:   log likelihood =  -797.6822  
-Iteration 4:   log likelihood =  -797.6822  
+Iteration 0:   log likelihood = -829.92101  
+Iteration 1:   log likelihood = -795.35999  
+Iteration 2:   log likelihood = -794.32784  
+Iteration 3:   log likelihood = -794.31657  
+Iteration 4:   log likelihood = -794.31657  
 
-Probit regression                                       Number of obs =  1,732
-                                                        LR chi2(21)   =  71.14
-                                                        Prob &gt; chi2   = 0.0000
-Log likelihood = -797.6822                              Pseudo R2     = 0.0427
+Probit regression                                       Number of obs =  1,723
+                                                        LR chi2(21)   =  71.21
+                                                        Prob > chi2   = 0.0000
+Log likelihood = -794.31657                             Pseudo R2     = 0.0429
 
-------------------------------------------------------------------------------
-     p_actor | Coefficient  Std. err.      z    P&gt;|z|     [95% conf. interval]
--------------+----------------------------------------------------------------
-        calc |   .1082908   .0774766     1.40   0.162    -.0435606    .2601422
-             |
-     time_hr |
-          2  |  -.1331129   .1413429    -0.94   0.346      -.41014    .1439142
-          3  |  -.3259341    .119239    -2.73   0.006    -.5596383     -.09223
-          4  |  -.1567091   .1350585    -1.16   0.246    -.4214188    .1080006
-          5  |  -.2240679   .1257006    -1.78   0.075    -.4704364    .0223007
-          6  |  -.5026263   .1572906    -3.20   0.001    -.8109103   -.1943423
-          7  |  -.1377779   .1272578    -1.08   0.279    -.3871986    .1116429
-          8  |  -.0297373   .4711496    -0.06   0.950    -.9531735    .8936989
-             |
-    d_anioC2 |   .3072812   .6239511     0.49   0.622    -.9156404    1.530203
-    d_anioC3 |   1.164786   .4732901     2.46   0.014     .2371544    2.092417
-    d_anioC4 |   .7100118   .4648649     1.53   0.127    -.2011067     1.62113
-    d_anioC5 |   1.037577   .4362145     2.38   0.017     .1826126    1.892542
-    d_anioC6 |   1.360544   .4269148     3.19   0.001      .523806    2.197281
-    d_anioC7 |   1.586553   .4387762     3.62   0.000     .7265675    2.446539
-      d_num2 |  -.5973385   .2551905    -2.34   0.019    -1.097503   -.0971742
-      d_num3 |  -.0188294     .17946    -0.10   0.916    -.3705646    .3329057
-    d_junta2 |   .3134798   .1481717     2.12   0.034     .0230687     .603891
-    d_junta3 |   .1552163   .1482518     1.05   0.295     -.135352    .4457845
-    d_junta4 |   .0260552   .1469173     0.18   0.859    -.2618973    .3140077
-    d_junta5 |   .2763537   .1503102     1.84   0.066    -.0182489    .5709563
-       phase |   -.335944   .1700589    -1.98   0.048    -.6692533   -.0026347
-       _cons |  -1.842998    .504927    -3.65   0.000    -2.832636   -.8533588
-------------------------------------------------------------------------------
-
-</code></pre>
-<p>obtain generalized residual to form the augmented regression in the second stage</p>
-<pre><code>. *Linear predictions
+─────────────┬────────────────────────────────────────────────────────────────
+     p_actor │ Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+─────────────┼────────────────────────────────────────────────────────────────
+        calc │   .1068747   .0775719     1.38   0.168    -.0451634    .2589128
+             │
+     time_hr │
+          2  │  -.1498465   .1421503    -1.05   0.292    -.4284559     .128763
+          3  │  -.3246086   .1193433    -2.72   0.007    -.5585172      -.0907
+          4  │  -.1549947   .1350881    -1.15   0.251    -.4197625    .1097731
+          5  │  -.2131818   .1259143    -1.69   0.090    -.4599692    .0336056
+          6  │  -.4922371   .1576595    -3.12   0.002    -.8012441   -.1832301
+          7  │  -.1306147   .1274426    -1.02   0.305    -.3803977    .1191683
+          8  │  -.0276497   .4711439    -0.06   0.953    -.9510748    .8957754
+             │
+    d_anioC2 │   .3019069    .624342     0.48   0.629     -.921781    1.525595
+    d_anioC3 │   1.179845    .474199     2.49   0.013     .2504317    2.109258
+    d_anioC4 │   .7134898   .4653147     1.53   0.125    -.1985102     1.62549
+    d_anioC5 │   1.035221   .4364885     2.37   0.018     .1797198    1.890723
+    d_anioC6 │   1.368661   .4272626     3.20   0.001     .5312415     2.20608
+    d_anioC7 │   1.584779   .4390592     3.61   0.000     .7242388    2.445319
+      d_num2 │  -.6017508   .2553154    -2.36   0.018     -1.10216   -.1013418
+      d_num3 │  -.0228323   .1795138    -0.13   0.899    -.3746729    .3290083
+    d_junta2 │    .318422    .148337     2.15   0.032     .0276869     .609157
+    d_junta3 │   .1414814   .1488785     0.95   0.342    -.1503151    .4332779
+    d_junta4 │   .0247564   .1468863     0.17   0.866    -.2631355    .3126483
+    d_junta5 │   .2781593    .150309     1.85   0.064    -.0164409    .5727595
+       phase │  -.3287289   .1702145    -1.93   0.053    -.6623431    .0048854
+       _cons │  -1.855253   .5054313    -3.67   0.000    -2.845881   -.8646263
+─────────────┴────────────────────────────────────────────────────────────────
+</pre>
+<p>obtain generalized residual to form the augmented regression in the
+second stage</p>
+<pre class='stata'>. *Linear predictions
 . cap drop xb
 
 . predict xb, xb
@@ -131,17 +404,19 @@ Log likelihood = -797.6822                              Pseudo R2     = 0.0427
 . *Generalized residuals
 . cap drop gen_resid_pr
 
-. gen gen_resid_pr = cond(p_actor == 1, normalden(xb)/normal(xb), -normalden(xb)/(1-normal(xb)))  
-
-</code></pre>
-<p>2) Run the second stage. We use bootstrap to estimate standard errors, since estimation is done in two stages.</p>
-<pre><code>. *Second stage
+. gen gen_resid_pr = cond(p_actor == 1, normalden(xb)/normal(xb), -normalden(xb)/(1-normal(xb)))    
+</pre>
+<ol start="2" type="1">
+<li>Run the second stage. We use bootstrap to estimate standard errors,
+since estimation is done in two stages.</li>
+</ol>
+<pre class='stata'>. *Second stage
 . reg seconcilio calc p_actor calc_x_pactor gen_resid_p d_anio* d_num* d_junta* phase , vce(bootstrap, cluster(clust
-&gt; er_v) rep(1000) bca)
+> er_v) rep(100) bca)
 (running regress on estimation sample)
 
 Jackknife replications (700)
-----+--- 1 ---+--- 2 ---+--- 3 ---+--- 4 ---+--- 5 
+────┼─── 1 ───┼─── 2 ───┼─── 3 ───┼─── 4 ───┼─── 5 
 ..................................................    50
 ..................................................   100
 ..................................................   150
@@ -157,103 +432,1088 @@ Jackknife replications (700)
 ..................................................   650
 ..................................................   700
 
-Bootstrap replications (1,000)
-----+--- 1 ---+--- 2 ---+--- 3 ---+--- 4 ---+--- 5 
+Bootstrap replications (100)
+────┼─── 1 ───┼─── 2 ───┼─── 3 ───┼─── 4 ───┼─── 5 
 ..................................................    50
 ..................................................   100
-..................................................   150
-..................................................   200
-..................................................   250
-..................................................   300
-..................................................   350
-..................................................   400
-..................................................   450
-..................................................   500
-..................................................   550
-..................................................   600
-..................................................   650
-..................................................   700
-..................................................   750
-..................................................   800
-..................................................   850
-..................................................   900
-..................................................   950
-.................................................. 1,000
 
 Linear regression                                       Number of obs =  1,723
-                                                        Replications  =  1,000
-                                                        Wald chi2(17) = 271.03
-                                                        Prob &gt; chi2   = 0.0000
-                                                        R-squared     = 0.1438
-                                                        Adj R-squared = 0.1353
+                                                        Replications  =    100
+                                                        Wald chi2(17) = 332.97
+                                                        Prob > chi2   = 0.0000
+                                                        R-squared     = 0.1437
+                                                        Adj R-squared = 0.1351
                                                         Root MSE      = 0.3371
 
                               (Replications based on 700 clusters in cluster_v)
--------------------------------------------------------------------------------
-              |   Observed   Bootstrap                         Normal-based
-   seconcilio | coefficient  std. err.      z    P&gt;|z|     [95% conf. interval]
---------------+----------------------------------------------------------------
-         calc |   .0022582   .0172544     0.13   0.896    -.0315598    .0360762
-      p_actor |   .6966963   .2119233     3.29   0.001     .2813344    1.112058
-calc_x_pactor |   .1223531   .0530376     2.31   0.021     .0184014    .2263048
- gen_resid_pr |  -.3104685   .1137132    -2.73   0.006    -.5333422   -.0875948
-     d_anioC2 |  -.0457858   .0255682    -1.79   0.073    -.0958986     .004327
-     d_anioC3 |  -.1326319   .0492931    -2.69   0.007    -.2292446   -.0360192
-     d_anioC4 |  -.0468025   .0401442    -1.17   0.244    -.1254838    .0318787
-     d_anioC5 |  -.0949507   .0407189    -2.33   0.020    -.1747583   -.0151431
-     d_anioC6 |  -.0736114     .05482    -1.34   0.179    -.1810567    .0338339
-     d_anioC7 |  -.0742996   .0703521    -1.06   0.291    -.2121873     .063588
-       d_num2 |   .0476116   .0415588     1.15   0.252    -.0338421    .1290654
-       d_num3 |  -.0245896   .0327161    -0.75   0.452    -.0887121    .0395328
-     d_junta2 |  -.0349334   .0416985    -0.84   0.402     -.116661    .0467942
-     d_junta3 |  -.0273751   .0336521    -0.81   0.416     -.093332    .0385818
-     d_junta4 |   .2027386   .0378757     5.35   0.000     .1285036    .2769736
-     d_junta5 |  -.0851906   .0320855    -2.66   0.008     -.148077   -.0223042
-        phase |   .0544593   .0504421     1.08   0.280    -.0444055    .1533241
-        _cons |  -.0078127   .0793433    -0.10   0.922    -.1633227    .1476973
--------------------------------------------------------------------------------
+──────────────┬────────────────────────────────────────────────────────────────
+              │   Observed   Bootstrap                         Normal-based
+   seconcilio │ coefficient  std. err.      z    P>|z|     [95% conf. interval]
+──────────────┼────────────────────────────────────────────────────────────────
+         calc │   .0024065   .0161075     0.15   0.881    -.0291635    .0339765
+      p_actor │   .6933049   .2087212     3.32   0.001     .2842188    1.102391
+calc_x_pactor │   .1231795   .0527697     2.33   0.020     .0197528    .2266063
+ gen_resid_pr │  -.3088985   .1134259    -2.72   0.006    -.5312091   -.0865879
+     d_anioC2 │  -.0456168   .0296084    -1.54   0.123    -.1036482    .0124146
+     d_anioC3 │  -.1341044   .0541867    -2.47   0.013    -.2403083   -.0279004
+     d_anioC4 │  -.0469382   .0423422    -1.11   0.268    -.1299274     .036051
+     d_anioC5 │  -.0943449   .0469525    -2.01   0.044      -.18637   -.0023198
+     d_anioC6 │  -.0745372   .0618216    -1.21   0.228    -.1957052    .0466308
+     d_anioC7 │  -.0731952   .0788843    -0.93   0.353    -.2278055    .0814152
+       d_num2 │   .0477798   .0451381     1.06   0.290    -.0406893    .1362489
+       d_num3 │  -.0240989   .0344077    -0.70   0.484    -.0915367     .043339
+     d_junta2 │  -.0357587   .0431961    -0.83   0.408    -.1204216    .0489041
+     d_junta3 │  -.0259217   .0313501    -0.83   0.408    -.0873667    .0355233
+     d_junta4 │   .2027468   .0409171     4.96   0.000     .1225508    .2829428
+     d_junta5 │  -.0849376   .0303047    -2.80   0.005    -.1443337   -.0255415
+        phase │   .0530361   .0518773     1.02   0.307    -.0486416    .1547137
+        _cons │  -.0057953    .080239    -0.07   0.942    -.1630609    .1514703
+──────────────┴────────────────────────────────────────────────────────────────
+</pre>
+<p>Note that by exploting the binary nature of the endogenous variable,
+we achieve more efficiency. The coefficient of the interaction is
+&lt;&lt;dd_display: %9.3f _b[calc_x_pactor]&gt;&gt;, which is smaller
+than the 2sls IV estimate, and we get significance at the
+&lt;&lt;dd_display: %9.3f 200*ttail(e(N)-e(df_m),
+abs(_b[calc_x_pactor]/_se[calc_x_pactor]))&gt;&gt;% level. Moreover, we
+can easily reject the null of exogeneity of the employee present
+(<em>p_actor</em>) by looking at the p-value of the variable
+<em>gen_resid_pr</em> (&lt;&lt;dd_display: %9.3f 200*ttail(e(N)-e(df_m),
+abs(_b[gen_resid_p]/_se[gen_resid_p]))&gt;&gt;).</p>
+<p>The previous estimation can be also done with the
+<code>etregress</code> command with the <code>two-step</code> option</p>
+<p>An advantage using this command is the analytical derivation of the
+covariance matrix.</p>
+<p>A consistent estimate of the regression distrubance variance is
+obtained by <span class="math display">\[ \hat{\sigma^2} =
+\frac{e^\prime e+\beta_r^2\sum_{j}r_j(r_j+w_j\hat{\gamma})}{N}\]</span>
+with <span class="math inline">\(\beta_r\)</span> the parameter estimate
+of the generalized residual. The two-step estimate of <span
+class="math inline">\(\rho\)</span> is then <span
+class="math display">\[\hat{\rho} =
+\frac{\beta_r}{\hat{\sigma}}\]</span></p>
+<p>Finally, let <span class="math inline">\(A = [x \quad t \quad
+r]\)</span> and <span class="math inline">\(D = diag(1-\hat{\rho}^{2}
+r_{j}(r_{j}+w_{j}\hat{\gamma}))\)</span>. The covariance matrix is <span
+class="math display">\[ V_{twostep} = \hat{\sigma}^2(A^\prime
+A)^{-1}(A^\prime DA + Q)(A^\prime A)^{-1}\]</span> with <span
+class="math display">\[Q = \hat{\rho}^2(A^\prime DA)V_p(A^\prime
+DA)\]</span> and <span class="math inline">\(V_p\)</span> the covariance
+estimate from the probit first-stage.</p>
+<pre class='stata'>. etregress seconcilio i.calc##i.p_actor d_anio* d_num* d_junta* phase, treat(p_actor = i.time_hr calc d_anio* d_num
+> * d_junta* phase )  twostep 
 
-</code></pre>
-<p>As suggested by @Wooldridge, when the EEV $t_j$ interacts with $x_j$ there are other natural choices for IVs: Use the interactions $\Phi(w_j\hat\gamma)x_j$ where $\Phi(w_j\hat\gamma)$ are the predicted probabilities of $t_j$. This IV estimator has a theoretical advantage over the CF estimator, at least if one assumes the linear model with constant coefficients is the correct specification: The IV estimator is generally consistent even if the probit model is misspecified</p>
-<h3><a href="#estimation" id="estimation">Estimation</a></h3>
-<h3><a href="#general-potential-outcome-model-correlated-random-coefficient" id="general-potential-outcome-model-correlated-random-coefficient">General potential outcome model - Correlated Random Coefficient</a></h3>
-<p>The setup of the previous section allows the endogenous explanatory variable or variables to appear linearly or nonlinearly and to interact with observed covariates. This may be sufficient for some applications, but one may also want to allow the effect of y2 to depend on unobs</p>
-<p>ved fully. When one allows random coefficients to be correlated with some explanatory variables, such as amount of school or choice of school, one obtains a &ldquo;correlated random coefficient&rdquo; (CRC) model, a label adopted by Heckman and Vytlacil (1998) and discussed in the context of the return to schooling by Card (2001). In the treatment effects literature, CRC models allow for heterogeneous treatment effects combined with self-selection into treatment —provided that there are suitable instrumental variables for treatment as signment</p>
-<p>The recent literature on instrumental variables (IV) features models in which agents sort into treatment status on the basis of gains from treatment as well as on baseline-pretreatment levels. Components of the gains known to the agents and acted on by them may not be known by the observing economist. Such models are called correlated random coefficient models.</p>
-<p>etregress seconcilio altT i.anioControl i.numActores i.junta i.phase , treat(p_actor = i.time_hr altT i.anioControl i.numActores i.junta i.phase) twostep first</p>
-<p>*CF *Probit - Interaction</p>
-<p>eststo clear</p>
-<p>gen esample = e(sample)</p>
-<p>eststo : reg seconcilio altT p_actor   i.anioControl i.numActores i.junta i.phase gen_resid_p</p>
-<p>eststo : reg seconcilio altT i.p_actor##c.gen_resid_p   i.anioControl i.numActores i.junta i.phase</p>
-<p>eststo : reg seconcilio altT p_actor interactT  i.anioControl i.numActores i.junta i.phase gen_resid_p</p>
-<p>*CRC</p>
-<p>eststo : reg seconcilio altT i.p_actor##c.gen_resid_p interactT  i.anioControl i.numActores i.junta i.phase</p>
-<p>etregress seconcilio i.altT##i.p_actor i.anioControl i.numActores i.junta i.phase , treat(p_actor = i.time_hr altT i.anioControl i.numActores i.junta i.phase) twostep</p>
-<p>etregress seconcilio i.altT##i.p_actor i.anioControl i.numActores i.junta i.phase , treat(p_actor = i.time_hr altT i.anioControl i.numActores i.junta i.phase)  cfunction  poutcomes</p>
-<p>etregress seconcilio i.altT##i.p_actor i.anioControl i.numActores i.junta i.phase , treat(p_actor = i.time_hr altT i.anioControl i.numActores i.junta i.phase)    poutcomes</p>
-<pre><code>etregress seconcilio i.altT##i.p_actor i.anioControl i.numActores i.junta i.phase , treat(p_actor = i.time_hr altT i.anioControl i.numActores i.junta i.phase)  cfunction  
-</code></pre>
-<p>etregress seconcilio i.altT##i.p_actor i.anioControl i.numActores i.junta i.phase , treat(p_actor = i.time_hr altT i.anioControl i.numActores i.junta i.phase)</p>
-<p>reg p_actor  i.altT##i.time_hr i.anioControl i.numActores i.junta i.phase if esample cap drop p1 predict p1 reg interactT i.altT##i.time_hr i.anioControl i.numActores i.junta i.phase if esample cap drop p2 predict p2</p>
-<p>reg seconcilio altT p1 p2 i.anioControl i.numActores i.junta i.phase if esample</p>
-<p>ivregress 2sls seconcilio altT   i.anioControl i.numActores i.junta i.phase (p_actor  = i.time_hr), first</p>
-<p>probit p_actor  i.altT time_hr2-time_hr8 d_anio* d_num* d_junta* phase cap drop p1 predict p1</p>
-<p>reg seconcilio altT p1 d_anio* d_num* d_junta* phase</p>
-<p>cap drop pint su altT gen pint = p1*(altT-`r(mean)&rsquo;) reg seconcilio altT p1 pint d_anio* d_num* d_junta* phase</p>
-<p>ivtreatreg seconcilio p_actor altT d_anio* d_num* d_junta* phase , model(direct-2sls) iv(time_hr2-time_hr8) hetero(altT)</p>
-<p>ivtreatreg seconcilio p_actor altT d_anio* d_num* d_junta* phase, model(probit-ols) iv(time_hr2-time_hr8) hetero(altT)</p>
-<p>di   e(ate)<br />
-di   e(atet) di  e(atent)</p>
-<p>ivtreatreg seconcilio p_actor altT d_anio* d_num* d_junta* phase, model(probit-2sls) iv(time_hr2-time_hr8) hetero(altT)</p>
-<p>ivtreatreg seconcilio p_actor altT d_anio* d_num* d_junta* phase, model(heckit) iv(time_hr2-time_hr8) hetero(altT)</p>
-<p>ivtreatreg seconcilio p_actor altT d_anio* d_num* d_junta* phase, model(heckit) iv(time_hr2-time_hr8) hetero(altT)</p>
-<p>&laquo;/dd_do&raquo;</p>
-<pre><code>
-el mate 
-$$\mathbb{E}[x-y]$$
+Linear regression with endogenous treatment     Number of obs      =      1723
+Estimator: Two step                             Wald chi2(29)      =    179.49
+                                                Prob > chi2        =    0.0000
 
-pero es igual que $a-v$ sdfsdfdfg
+─────────────┬────────────────────────────────────────────────────────────────
+             │ Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+─────────────┼────────────────────────────────────────────────────────────────
+seconcilio   │
+      1.calc │   .0024065   .0222915     0.11   0.914    -.0412841    .0460971
+   1.p_actor │    .693305   .2081093     3.33   0.001     .2854183    1.101192
+             │
+calc#p_actor │
+        1 1  │   .1231795   .0399011     3.09   0.002     .0449748    .2013842
+             │
+    d_anioC2 │  -.0456168   .1003302    -0.45   0.649    -.2422604    .1510268
+    d_anioC3 │  -.1341044   .0929664    -1.44   0.149    -.3163151    .0481063
+    d_anioC4 │  -.0469382    .075965    -0.62   0.537    -.1958269    .1019504
+    d_anioC5 │  -.0943449   .0727291    -1.30   0.195    -.2368912    .0482014
+    d_anioC6 │  -.0745372   .0786531    -0.95   0.343    -.2286944      .07962
+    d_anioC7 │  -.0731952   .0936592    -0.78   0.435    -.2567639    .1103735
+      d_num2 │   .0477798   .0574758     0.83   0.406    -.0648707    .1604304
+      d_num3 │  -.0240989   .0455255    -0.53   0.597    -.1133273    .0651295
+    d_junta2 │  -.0357587   .0434119    -0.82   0.410    -.1208446    .0493271
+    d_junta3 │  -.0259217   .0388017    -0.67   0.504    -.1019717    .0501283
+    d_junta4 │   .2027468   .0370128     5.48   0.000      .130203    .2752905
+    d_junta5 │  -.0849376   .0425453    -2.00   0.046    -.1683248   -.0015504
+       phase │   .0530361   .0538954     0.98   0.325    -.0525969     .158669
+     p_actor │          0  (omitted)
+       _cons │  -.0057953    .096055    -0.06   0.952    -.1940596    .1824691
+─────────────┼────────────────────────────────────────────────────────────────
+p_actor      │
+     time_hr │
+          2  │  -.1498465   .1421503    -1.05   0.292    -.4284559     .128763
+          3  │  -.3246086   .1193433    -2.72   0.007    -.5585172      -.0907
+          4  │  -.1549947   .1350881    -1.15   0.251    -.4197625    .1097731
+          5  │  -.2131818   .1259143    -1.69   0.090    -.4599692    .0336056
+          6  │  -.4922371   .1576595    -3.12   0.002    -.8012441   -.1832301
+          7  │  -.1306147   .1274426    -1.02   0.305    -.3803977    .1191683
+          8  │  -.0276497   .4711439    -0.06   0.953    -.9510748    .8957754
+             │
+        calc │   .1068747   .0775719     1.38   0.168    -.0451634    .2589128
+    d_anioC2 │   .3019069    .624342     0.48   0.629     -.921781    1.525595
+    d_anioC3 │   1.179845    .474199     2.49   0.013     .2504317    2.109258
+    d_anioC4 │   .7134898   .4653147     1.53   0.125    -.1985102     1.62549
+    d_anioC5 │   1.035221   .4364885     2.37   0.018     .1797198    1.890723
+    d_anioC6 │   1.368661   .4272626     3.20   0.001     .5312415     2.20608
+    d_anioC7 │   1.584779   .4390592     3.61   0.000     .7242388    2.445319
+      d_num2 │  -.6017508   .2553154    -2.36   0.018     -1.10216   -.1013418
+      d_num3 │  -.0228323   .1795138    -0.13   0.899    -.3746729    .3290083
+    d_junta2 │    .318422    .148337     2.15   0.032     .0276869     .609157
+    d_junta3 │   .1414814   .1488785     0.95   0.342    -.1503151    .4332779
+    d_junta4 │   .0247564   .1468863     0.17   0.866    -.2631355    .3126483
+    d_junta5 │   .2781593    .150309     1.85   0.064    -.0164409    .5727595
+       phase │  -.3287289   .1702145    -1.93   0.053    -.6623431    .0048854
+       _cons │  -1.855253   .5054313    -3.67   0.000    -2.845881   -.8646263
+─────────────┼────────────────────────────────────────────────────────────────
+hazard       │
+      lambda │  -.3088985   .1158761    -2.67   0.008    -.5360116   -.0817855
+─────────────┼────────────────────────────────────────────────────────────────
+         rho │   -0.78253
+       sigma │  .39474245
+─────────────┴────────────────────────────────────────────────────────────────
+</pre>
+<p>The point estimate is the same as in the previous method, but the
+std. error (&lt;&lt;dd_display: %9.3f _se[1.calc#1.p_actor]&gt;&gt;) is
+smaller.</p>
+<h4 id="gmm">GMM</h4>
+<p>Previously we did not exploit clustering of the standard errors. To
+alleviate this a one-step CF GMM estimator can be implemented.</p>
+<p>We form the parameter vector <span class="math inline">\(\theta =
+(\beta^\prime, \delta, \gamma^\prime, \operatorname{atanh}\rho,
+\ln\sigma)^\prime\)</span>.</p>
+<p>We have three separate error functions for the EEV, the outcome mean,
+and the outcome variance: <span
+class="math display">\[u_t(t_j,w_j,\theta)
+=  t_j(\frac{\phi(w_j{\gamma})}{\Phi(w_j{\gamma})})+(1-t_j)(-\frac{\phi(w_j{\gamma})}{1-\Phi(w_j{\gamma})})\]</span>
+<span class="math display">\[u_m(y_j,t_j,x_j,w_j,\theta) = y_j-x_j\beta
+-\delta t_j-\rho\sigma u_{t,j} \]</span> <span
+class="math display">\[u_v(y_j,t_j,x_j,w_j,\theta) = u^2_{m,j} -\sigma^2
+[1-\rho^2(u_{t,j}(u_{t,j}+w_j\gamma))]\]</span></p>
+<p>Let <span class="math inline">\(z_j = (x_j,t_j,r_j)\)</span> , <span
+class="math inline">\(Z_j = diag(z_j, w_j, 1)\)</span>, and <span
+class="math display">\[s_j(y_j, t_j, x_j,w_j,\theta) =
+Z_{j}^{\prime}(u_{m,j},u_{t,j},u_{v,j})^{\prime} \]</span> The CF
+estimator <span class="math inline">\(\hat{\theta}\)</span> is the value
+of <span class="math inline">\(\theta\)</span> thats satisfies the
+sample-moment conditions. <span class="math display">\[0 =
+\frac{1}{N}\sum_{j}s_j(y_j, t_j, x_j,w_j,\theta)\]</span></p>
+<p>The variance estimator is <span class="math display">\[\hat{V} =
+\frac{1}{N}GSG^{\prime}\]</span> with <span class="math display">\[ G =
+\left((1/N)\sum_{j} \frac{\partial s_j(y_j, t_j, x_j,w_j,\theta)
+}{\partial \theta}\right)^{-1}\]</span> <span class="math display">\[ S
+= (1/N)\sum_{j} s_j(y_j, t_j, x_j,w_j,\theta)s_j(y_j, t_j,
+x_j,w_j,\theta)^{\prime}\]</span></p>
+<p>This is done using the option <code>cfunction</code> in the
+<code>etregress</code> command</p>
+<pre class='stata'>. etregress seconcilio i.calc##i.p_actor d_anio* d_num* d_junta* phase, treat(p_actor = i.time_hr calc d_anio* d_num
+> * d_junta* phase )  cfunction vce(cluster cluster_v) 
 
-y entonces se da que 
-</code></pre>
+Iteration 0:   GMM criterion Q(b) =  6.059e-17  
+Iteration 1:   GMM criterion Q(b) =  9.749e-23  
+
+Linear regression with endogenous treatment              Number of obs = 1,723
+Estimator: Control function
+─────────────┬────────────────────────────────────────────────────────────────
+             │               Robust
+             │ Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+─────────────┼────────────────────────────────────────────────────────────────
+seconcilio   │
+      1.calc │   .0024065   .0194351     0.12   0.901    -.0356857    .0404987
+   1.p_actor │   .6933049   .2338493     2.96   0.003     .2349687    1.151641
+             │
+calc#p_actor │
+        1 1  │   .1231795   .0548071     2.25   0.025     .0157597    .2305994
+             │
+    d_anioC2 │  -.0456168   .0441718    -1.03   0.302     -.132192    .0409583
+    d_anioC3 │  -.1341044   .0662921    -2.02   0.043    -.2640345   -.0041743
+    d_anioC4 │  -.0469383   .0493452    -0.95   0.341    -.1436531    .0497766
+    d_anioC5 │  -.0943449    .049867    -1.89   0.059    -.1920824    .0033925
+    d_anioC6 │  -.0745372   .0620876    -1.20   0.230    -.1962267    .0471522
+    d_anioC7 │  -.0731952   .0809195    -0.90   0.366    -.2317945     .085404
+      d_num2 │   .0477798    .050765     0.94   0.347    -.0517177    .1472773
+      d_num3 │  -.0240989   .0404762    -0.60   0.552    -.1034308    .0552331
+    d_junta2 │  -.0357587   .0440163    -0.81   0.417    -.1220291    .0505117
+    d_junta3 │  -.0259217   .0388619    -0.67   0.505    -.1020897    .0502463
+    d_junta4 │   .2027468   .0418702     4.84   0.000     .1206828    .2848108
+    d_junta5 │  -.0849376   .0388583    -2.19   0.029    -.1610985   -.0087767
+       phase │   .0530361   .0574862     0.92   0.356    -.0596349    .1657071
+       _cons │  -.0057952   .0869628    -0.07   0.947    -.1762391    .1646487
+─────────────┼────────────────────────────────────────────────────────────────
+p_actor      │
+     time_hr │
+          2  │  -.1498465   .1419597    -1.06   0.291    -.4280823    .1283894
+          3  │  -.3246086    .117621    -2.76   0.006    -.5551415   -.0940757
+          4  │  -.1549947   .1344678    -1.15   0.249    -.4185468    .1085574
+          5  │  -.2131818   .1233851    -1.73   0.084    -.4550122    .0286485
+          6  │  -.4922371    .156751    -3.14   0.002    -.7994634   -.1850108
+          7  │  -.1306147   .1267074    -1.03   0.303    -.3789567    .1177273
+          8  │  -.0276497    .467419    -0.06   0.953    -.9437741    .8884747
+             │
+        calc │   .1068747   .0765838     1.40   0.163    -.0432269    .2569762
+    d_anioC2 │    .301908   .6127108     0.49   0.622    -.8989831    1.502799
+    d_anioC3 │   1.179846   .4641831     2.54   0.011     .2700635    2.089628
+    d_anioC4 │    .713491   .4529866     1.58   0.115    -.1743463    1.601328
+    d_anioC5 │   1.035223     .42749     2.42   0.015     .1973576    1.873088
+    d_anioC6 │   1.368662   .4153534     3.30   0.001     .5545843     2.18274
+    d_anioC7 │    1.58478   .4273026     3.71   0.000     .7472825    2.422278
+      d_num2 │  -.6017508   .2591102    -2.32   0.020    -1.109597   -.0939041
+      d_num3 │  -.0228323   .1725079    -0.13   0.895    -.3609416     .315277
+    d_junta2 │    .318422   .1476733     2.16   0.031     .0289876    .6078564
+    d_junta3 │   .1414814   .1487784     0.95   0.342    -.1501188    .4330816
+    d_junta4 │   .0247564   .1471047     0.17   0.866    -.2635636    .3130764
+    d_junta5 │   .2781593   .1505475     1.85   0.065    -.0169084     .573227
+       phase │  -.3287289   .1686924    -1.95   0.051      -.65936    .0019023
+       _cons │  -1.855255   .4915709    -3.77   0.000    -2.818716   -.8917934
+─────────────┼────────────────────────────────────────────────────────────────
+     /athrho │  -1.051869   .6089553    -1.73   0.084    -2.245399     .141662
+    /lnsigma │  -.9295218   .1179515    -7.88   0.000    -1.160703    -.698341
+─────────────┼────────────────────────────────────────────────────────────────
+         rho │  -.7825317   .2360579                     -.9778252    .1407219
+       sigma │   .3947424   .0465605                       .313266    .4974098
+      lambda │  -.3088985   .1290697                     -.5618704   -.0559265
+─────────────┴────────────────────────────────────────────────────────────────
+Wald test of indep. eqns. (rho = 0): chi2(1) =     2.98   Prob > chi2 = 0.0841
+</pre>
+<p>Adittionally, the output displays a Wald test for the null <span
+class="math inline">\(H_0 : \rho = 0\)</span>, which serves as a null to
+test the exogeneity of <span class="math inline">\(t_j\)</span>.</p>
+<h4 id="maximum-likelihood">Maximum-Likelihood</h4>
+<p>Finally the command <code>etregress</code> also estimates via
+maximum-likelihood the parameters of interest.</p>
+<p>The log-likelihood function for observation <span
+class="math inline">\(j\)</span> is given by <span
+class="math display">\[ ln L_j = t_j\left(ln
+\Phi\left\lbrace\frac{w_j\gamma+(y_j-x_j\beta-\delta)\rho/\sigma}{\sqrt{1-\rho^2}}\right\rbrace-\frac{1}{2}\left(\frac{y_j-x_j\beta-\delta}{\sigma}\right)^2-ln(\sqrt{2\pi}\sigma)\right)\]</span>
+<span class="math display">\[\quad\quad + (1-t_j)\left(ln
+\Phi\left\lbrace\frac{-w_j\gamma+(y_j-x_j\beta)\rho/\sigma}{\sqrt{1-\rho^2}}\right\rbrace-\frac{1}{2}\left(\frac{y_j-x_j\beta}{\sigma}\right)^2-ln(\sqrt{2\pi}\sigma)\right)\]</span></p>
+<pre class='stata'>. etregress seconcilio i.calc##i.p_actor d_anio* d_num* d_junta* phase , treat(p_actor = i.time_hr calc d_anio* d_nu
+> m* d_junta* phase) vce(cluster cluster_v)   
+
+Iteration 0:   log pseudolikelihood = -1392.0094  
+Iteration 1:   log pseudolikelihood = -1365.4133  
+Iteration 2:   log pseudolikelihood = -1362.0313  
+Iteration 3:   log pseudolikelihood = -1361.7791  
+Iteration 4:   log pseudolikelihood = -1361.6661  (not concave)
+Iteration 5:   log pseudolikelihood = -1361.6154  (not concave)
+Iteration 6:   log pseudolikelihood = -1361.6067  (not concave)
+Iteration 7:   log pseudolikelihood = -1361.5993  (not concave)
+Iteration 8:   log pseudolikelihood = -1361.5934  (not concave)
+Iteration 9:   log pseudolikelihood = -1361.5876  (not concave)
+Iteration 10:  log pseudolikelihood = -1361.5764  (not concave)
+Iteration 11:  log pseudolikelihood = -1361.5677  (not concave)
+Iteration 12:  log pseudolikelihood = -1361.5598  (not concave)
+Iteration 13:  log pseudolikelihood = -1361.5525  (not concave)
+Iteration 14:  log pseudolikelihood = -1361.5416  (not concave)
+Iteration 15:  log pseudolikelihood = -1361.5302  (not concave)
+Iteration 16:  log pseudolikelihood = -1361.4896  (not concave)
+Iteration 17:  log pseudolikelihood = -1361.4515  (not concave)
+Iteration 18:  log pseudolikelihood = -1361.4198  (not concave)
+Iteration 19:  log pseudolikelihood = -1361.3891  (not concave)
+Iteration 20:  log pseudolikelihood = -1361.3389  (not concave)
+Iteration 21:  log pseudolikelihood =  -1361.289  (not concave)
+Iteration 22:  log pseudolikelihood = -1361.2675  (not concave)
+Iteration 23:  log pseudolikelihood =  -1361.248  (not concave)
+Iteration 24:  log pseudolikelihood = -1361.2095  (not concave)
+Iteration 25:  log pseudolikelihood = -1361.1826  (not concave)
+Iteration 26:  log pseudolikelihood = -1361.1647  (not concave)
+Iteration 27:  log pseudolikelihood = -1361.1456  (not concave)
+Iteration 28:  log pseudolikelihood = -1361.1269  (not concave)
+Iteration 29:  log pseudolikelihood =  -1361.062  
+Iteration 30:  log pseudolikelihood = -1360.8756  
+Iteration 31:  log pseudolikelihood = -1360.5909  
+Iteration 32:  log pseudolikelihood = -1360.5862  
+Iteration 33:  log pseudolikelihood = -1360.5862  
+
+Linear regression with endogenous treatment             Number of obs =  1,723
+Estimator: Maximum likelihood                           Wald chi2(16) = 210.95
+Log pseudolikelihood = -1360.5862                       Prob > chi2   = 0.0000
+
+                            (Std. err. adjusted for 700 clusters in cluster_v)
+─────────────┬────────────────────────────────────────────────────────────────
+             │               Robust
+             │ Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+─────────────┼────────────────────────────────────────────────────────────────
+seconcilio   │
+      1.calc │   .0146161   .0155393     0.94   0.347    -.0158405    .0450726
+   1.p_actor │   .2090233   .0600313     3.48   0.000     .0913641    .3266826
+             │
+calc#p_actor │
+        1 1  │   .1337622   .0515154     2.60   0.009     .0327939    .2347305
+             │
+    d_anioC2 │  -.0424672   .0282807    -1.50   0.133    -.0978962    .0129619
+    d_anioC3 │  -.0458232   .0358799    -1.28   0.202    -.1161465    .0245001
+    d_anioC4 │  -.0143439   .0379264    -0.38   0.705    -.0886783    .0599906
+    d_anioC5 │  -.0296465   .0320585    -0.92   0.355      -.09248     .033187
+    d_anioC6 │   .0336569    .035571     0.95   0.344    -.0360611    .1033748
+    d_anioC7 │   .0693484   .0468293     1.48   0.139    -.0224354    .1611321
+      d_num2 │  -.0082751   .0387247    -0.21   0.831    -.0841741     .067624
+      d_num3 │  -.0258081   .0324724    -0.79   0.427    -.0894529    .0378366
+    d_junta2 │   .0053113   .0372709     0.14   0.887    -.0677384    .0783609
+    d_junta3 │  -.0139092   .0325389    -0.43   0.669    -.0776843     .049866
+    d_junta4 │   .2028513   .0368947     5.50   0.000     .1305391    .2751635
+    d_junta5 │  -.0500745   .0288902    -1.73   0.083    -.1066983    .0065493
+       phase │   .0061961   .0473791     0.13   0.896    -.0866653    .0990575
+       _cons │   .0086192   .0768071     0.11   0.911    -.1419199    .1591584
+─────────────┼────────────────────────────────────────────────────────────────
+p_actor      │
+     time_hr │
+          2  │  -.1597462   .1404614    -1.14   0.255    -.4350455    .1155531
+          3  │  -.3414242   .1202009    -2.84   0.005    -.5770138   -.1058347
+          4  │  -.1619543   .1333394    -1.21   0.225    -.4232947    .0993861
+          5  │  -.2353876    .126798    -1.86   0.063    -.4839071    .0131319
+          6  │  -.5092253    .177772    -2.86   0.004     -.857652   -.1607986
+          7  │  -.1536237   .1270923    -1.21   0.227      -.40272    .0954725
+          8  │   .0680252   .4787862     0.14   0.887    -.8703785    1.006429
+             │
+        calc │   .1060997   .0680712     1.56   0.119    -.0273174    .2395169
+    d_anioC2 │   .2952909    .609375     0.48   0.628    -.8990621    1.489644
+    d_anioC3 │   1.170744    .463179     2.53   0.011     .2629294    2.078558
+    d_anioC4 │   .7064368   .4518582     1.56   0.118     -.179189    1.592063
+    d_anioC5 │   1.030794    .426159     2.42   0.016     .1955378     1.86605
+    d_anioC6 │   1.369094   .4140184     3.31   0.001     .5576329    2.180555
+    d_anioC7 │   1.583949   .4260251     3.72   0.000     .7489547    2.418942
+      d_num2 │  -.6126537   .2967932    -2.06   0.039    -1.194358   -.0309498
+      d_num3 │  -.0244273     .17805    -0.14   0.891    -.3733988    .3245442
+    d_junta2 │   .3193813   .1469946     2.17   0.030     .0312771    .6074855
+    d_junta3 │   .1441099   .1362582     1.06   0.290    -.1229512    .4111711
+    d_junta4 │   .0183303    .133664     0.14   0.891    -.2436462    .2803069
+    d_junta5 │   .2806338   .1490939     1.88   0.060    -.0115849    .5728525
+       phase │    -.33322   .1641036    -2.03   0.042    -.6548573   -.0115828
+       _cons │   -1.83235   .4916063    -3.73   0.000    -2.795881   -.8688193
+─────────────┼────────────────────────────────────────────────────────────────
+     /athrho │  -.1045967   .0782112    -1.34   0.181    -.2578878    .0486945
+    /lnsigma │  -1.087594    .030282   -35.92   0.000    -1.146946   -1.028243
+─────────────┼────────────────────────────────────────────────────────────────
+         rho │  -.1042169   .0773617                     -.2523189     .048656
+       sigma │   .3370262   .0102058                      .3176052    .3576348
+      lambda │  -.0351238    .026402                     -.0868708    .0166232
+─────────────┴────────────────────────────────────────────────────────────────
+Wald test of indep. eqns. (rho = 0): chi2(1) =     1.79   Prob > chi2 = 0.1811
+</pre>
+<p>As suggested by <span class="citation"
+data-cites="Wooldridge">Wooldridge (2015)</span>, when the EEV <span
+class="math inline">\(t_j\)</span> interacts with <span
+class="math inline">\(x_j\)</span> there are other natural choices for
+IVs: Use the interactions <span
+class="math inline">\(\Phi(w_j\hat{\gamma})x_j\)</span> where <span
+class="math inline">\(\Phi(w_j\hat{\gamma})\)</span> are the predicted
+probabilities of <span class="math inline">\(t_j\)</span>. This IV
+estimator has a theoretical advantage over the CF estimator, at least if
+one assumes the linear model with constant coefficients is the correct
+specification: The IV estimator is generally consistent even if the
+probit model is misspecified.</p>
+<h3
+id="general-potential-outcome-model---correlated-random-coefficient">General
+potential outcome model - Correlated Random Coefficient</h3>
+<p>The previous setup allows the endogenous explanatory variable or
+variables to appear linearly or nonlinearly and to interact with
+observed covariates. This may be sufficient for some applications, but
+one may also want to allow the effect of the EEV to depend on
+unobservables.</p>
+<p>The recent literature on instrumental variables (IV) features models
+in which agents sort into treatment status on the basis of gains from
+treatment as well as on baseline-pretreatment levels. Components of the
+gains known to the agents and acted on by them may not be known by the
+observing economist. Such models are called <strong>correlated random
+coefficient models</strong> (CRC). CRC models allow for heterogeneous
+treatment effects combined with self-selection into treatment — provided
+that there are suitable instrumental variables for treatment
+assignment.</p>
+<p>We consider the model</p>
+<p><span class="math display">\[ y_{0j} = x_j\beta_0
++\epsilon_{0j}\]</span> <span class="math display">\[ y_{1j} =
+x_j\beta_1 +\epsilon_{1j}\]</span></p>
+<p>where <span class="math inline">\(t_j\)</span> is a binary-treatment
+variable generated by an unobservable latent model: <span
+class="math display">\[t_j = 1[w_j\gamma + u_j&gt;0]\]</span> and <span
+class="math display">\[ y_{j} = t_jy_{1j}+(1-t_j)y_{0j}\]</span></p>
+<p>We now rely on a trivariate normality assumption between the error
+terms of the potential outcomes and the error term of the EEV <span
+class="math inline">\((\epsilon_{0j}, \epsilon_{1j}, u_j)\)</span>,
+whose covariance structure is</p>
+<p><span class="math display">\[ \begin{bmatrix} \sigma^2_0 &amp;
+\sigma_{01}
+&amp; \rho_0\sigma_0
+\end{bmatrix}\]</span> <span class="math display">\[
+\begin{bmatrix}\sigma_{01}  &amp; \sigma^2_1 &amp; \rho_1\sigma_1
+\end{bmatrix}\]</span> <span class="math display">\[
+\begin{bmatrix}\rho_0\sigma_0   &amp; \rho_1\sigma_1 &amp; 1
+\end{bmatrix}\]</span></p>
+<p>By allowing group-specific variance and correlation, we allow for
+no-observable heterogeneity, and heterogeneous reaction function of
+<span class="math inline">\(y_0\)</span> and <span
+class="math inline">\(y_1\)</span> to <span
+class="math inline">\(x\)</span>.</p>
+<p>As in the constant-coefficient case, we can follow a two-step
+procedure, GMM, or ML.</p>
+<h4 id="two-step">Two-step</h4>
+<p>The endogenous switching model is</p>
+<p><span class="math display">\[ \mathbb{E}(y_j | t_j,x_j,w_j) =
+t_j(x_j\beta_1+\rho_1\sigma_1u_{t,j})+(1-t_j)(x_j\beta_0+\rho_0\sigma_0u_{t,j})\]</span>
+<span class="math display">\[\quad\quad = \]</span></p>
+<pre class='stata'>. su calc, meanonly
+
+. *Center interaction
+. gen calc_c_pactor = p_actor*(calc-`r(mean)')
+
+. 
+. reg seconcilio calc calc_c_pactor i.p_actor##c.gen_resid_pr  d_anio* d_num* d_junta* phase , vce(bootstrap, cluste
+> r(cluster_v) rep(100) bca)  
+(running regress on estimation sample)
+
+Jackknife replications (700)
+────┼─── 1 ───┼─── 2 ───┼─── 3 ───┼─── 4 ───┼─── 5 
+..................................................    50
+..................................................   100
+..................................................   150
+..................................................   200
+..................................................   250
+..................................................   300
+..................................................   350
+..................................................   400
+..................................................   450
+..................................................   500
+..................................................   550
+..................................................   600
+..................................................   650
+..................................................   700
+
+Bootstrap replications (100)
+────┼─── 1 ───┼─── 2 ───┼─── 3 ───┼─── 4 ───┼─── 5 
+..................................................    50
+..................................................   100
+
+Linear regression                                       Number of obs =  1,723
+                                                        Replications  =    100
+                                                        Wald chi2(18) = 315.61
+                                                        Prob > chi2   = 0.0000
+                                                        R-squared     = 0.1440
+                                                        Adj R-squared = 0.1350
+                                                        Root MSE      = 0.3372
+
+                                       (Replications based on 700 clusters in cluster_v)
+───────────────────────┬────────────────────────────────────────────────────────────────
+                       │   Observed   Bootstrap                         Normal-based
+            seconcilio │ coefficient  std. err.      z    P>|z|     [95% conf. interval]
+───────────────────────┼────────────────────────────────────────────────────────────────
+                  calc │   .0057069   .0173699     0.33   0.742    -.0283375    .0397513
+         calc_c_pactor │   .1203563   .0576508     2.09   0.037     .0073627    .2333498
+             1.p_actor │   .7673455   .2010115     3.82   0.000     .3733703    1.161321
+          gen_resid_pr │   -.211233   .1741625    -1.21   0.225    -.5525852    .1301191
+                       │
+p_actor#c.gen_resid_pr │
+                    1  │  -.1203583   .1566537    -0.77   0.442    -.4273939    .1866773
+                       │
+              d_anioC2 │  -.0424614   .0269137    -1.58   0.115    -.0952112    .0102884
+              d_anioC3 │  -.1051994   .0617535    -1.70   0.088     -.226234    .0158352
+              d_anioC4 │  -.0330789   .0470846    -0.70   0.482     -.125363    .0592052
+              d_anioC5 │  -.0714969   .0504969    -1.42   0.157    -.1704691    .0274752
+              d_anioC6 │  -.0431593   .0734568    -0.59   0.557     -.187132    .1008133
+              d_anioC7 │  -.0367222   .0922306    -0.40   0.691    -.2174908    .1440465
+                d_num2 │   .0327182   .0455765     0.72   0.473    -.0566101    .1220465
+                d_num3 │  -.0243868   .0309507    -0.79   0.431    -.0850489    .0362754
+              d_junta2 │  -.0269992   .0424216    -0.64   0.524    -.1101439    .0561456
+              d_junta3 │   -.022353   .0325666    -0.69   0.492    -.0861824    .0414764
+              d_junta4 │   .2030221   .0371211     5.47   0.000     .1302661    .2757781
+              d_junta5 │  -.0770956   .0331402    -2.33   0.020    -.1420491   -.0121421
+                 phase │   .0458371   .0495077     0.93   0.355    -.0511963    .1428705
+                 _cons │  -.0018311   .0747355    -0.02   0.980    -.1483099    .1446478
+───────────────────────┴────────────────────────────────────────────────────────────────
+</pre>
+<p>Compared with the constant-coefficient case, I have added the
+interaction <code>i.p_actor##c.gen_resid_pr</code>. The interaction term
+accounts for the random coefficient on <span
+class="math inline">\(t_j\)</span>. (See eqs. (22)-(26) <span
+class="citation" data-cites="Wooldridge">Wooldridge (2015)</span>)</p>
+<p>Centering <em>calc</em> about the sample average ensures that the
+coefficient on <em>p_actor</em> is the average effect.</p>
+<p>Finally, a test of joint significance of <span
+class="math inline">\(()\)</span> is valid without adjusting the
+standard errors. The joint test is a test of the null hypothesis that
+<span class="math inline">\(t_j\)</span> is exogenous.</p>
+<pre class='stata'>. test _b[gen_resid_pr]=_b[1.p_actor#gen_resid_pr]=0
+
+ ( 1)  gen_resid_pr - 1.p_actor#c.gen_resid_pr = 0
+ ( 2)  gen_resid_pr = 0
+
+           chi2(  2) =    8.69
+         Prob > chi2 =    0.0130
+</pre>
+<p>Alternatively we can use the command <code>ivtreatreg</code> to
+achieve the same result. The option <code>heckit</code> specifies a
+potential outcome model with a probit model for the EEV.</p>
+<p><span class="math display">\[ \mathbb{E}(y_j | t_j,x_j,w_j) =
+t_j(x_j\beta_1+\rho_1\sigma_1u_{t,j})+(1-t_j)(x_j\beta_0+\rho_0\sigma_0u_{t,j})\]</span>
+<span class="math display">\[\quad\quad = \]</span></p>
+<p>where is the ATE, ρ1andρ0are the correlations between the two
+potential outcomes’errors and the treatment’s error</p>
+<pre class='stata'>. *Generate dummies of time of hearing (since ivtreatreg does not allow factor variables)
+. tab time_hr, gen(time_hr)
+
+    time_hr │      Freq.     Percent        Cum.
+────────────┼───────────────────────────────────
+          1 │        263       15.26       15.26
+          2 │        170        9.87       25.13
+          3 │        378       21.94       47.07
+          4 │        202       11.72       58.79
+          5 │        293       17.01       75.80
+          6 │        163        9.46       85.26
+          7 │        244       14.16       99.42
+          8 │         10        0.58      100.00
+────────────┼───────────────────────────────────
+      Total │      1,723      100.00
+
+. drop time_hr1
+
+. 
+. ivtreatreg seconcilio p_actor calc d_anio* d_num* d_junta* phase, model(heckit) iv(time_hr2-time_hr8) hetero(calc)
+>  vce(robust)
+
+Probit regression                                       Number of obs =  1,723
+                                                        LR chi2(21)   =  71.21
+                                                        Prob > chi2   = 0.0000
+Log likelihood = -794.31657                             Pseudo R2     = 0.0429
+
+─────────────┬────────────────────────────────────────────────────────────────
+     p_actor │ Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+─────────────┼────────────────────────────────────────────────────────────────
+    time_hr2 │  -.1498465   .1421503    -1.05   0.292    -.4284559     .128763
+    time_hr3 │  -.3246086   .1193433    -2.72   0.007    -.5585172      -.0907
+    time_hr4 │  -.1549947   .1350881    -1.15   0.251    -.4197625    .1097731
+    time_hr5 │  -.2131818   .1259143    -1.69   0.090    -.4599692    .0336056
+    time_hr6 │  -.4922371   .1576595    -3.12   0.002    -.8012441   -.1832301
+    time_hr7 │  -.1306147   .1274426    -1.02   0.305    -.3803977    .1191683
+    time_hr8 │  -.0276497   .4711439    -0.06   0.953    -.9510748    .8957754
+        calc │   .1068747   .0775719     1.38   0.168    -.0451634    .2589128
+    d_anioC2 │   .3019069    .624342     0.48   0.629     -.921781    1.525595
+    d_anioC3 │   1.179845    .474199     2.49   0.013     .2504317    2.109258
+    d_anioC4 │   .7134898   .4653147     1.53   0.125    -.1985102     1.62549
+    d_anioC5 │   1.035221   .4364885     2.37   0.018     .1797198    1.890723
+    d_anioC6 │   1.368661   .4272626     3.20   0.001     .5312415     2.20608
+    d_anioC7 │   1.584779   .4390592     3.61   0.000     .7242388    2.445319
+      d_num2 │  -.6017508   .2553154    -2.36   0.018     -1.10216   -.1013418
+      d_num3 │  -.0228323   .1795138    -0.13   0.899    -.3746729    .3290083
+    d_junta2 │    .318422    .148337     2.15   0.032     .0276869     .609157
+    d_junta3 │   .1414814   .1488785     0.95   0.342    -.1503151    .4332779
+    d_junta4 │   .0247564   .1468863     0.17   0.866    -.2631355    .3126483
+    d_junta5 │   .2781593    .150309     1.85   0.064    -.0164409    .5727595
+       phase │  -.3287289   .1702145    -1.93   0.053    -.6623431    .0048854
+       _cons │  -1.855253   .5054313    -3.67   0.000    -2.845881   -.8646263
+─────────────┴────────────────────────────────────────────────────────────────
+
+Linear regression                               Number of obs     =      1,723
+                                                F(18, 1704)       =      17.91
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.1440
+                                                Root MSE          =     .33717
+
+─────────────┬────────────────────────────────────────────────────────────────
+             │               Robust
+  seconcilio │ Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+─────────────┼────────────────────────────────────────────────────────────────
+     p_actor │   .7673455    .204509     3.75   0.000     .3662304    1.168461
+        calc │   .0057069   .0177611     0.32   0.748     -.029129    .0405428
+    d_anioC2 │  -.0424614   .0246055    -1.73   0.085    -.0907216    .0057988
+    d_anioC3 │  -.1051994   .0578517    -1.82   0.069    -.2186672    .0082684
+    d_anioC4 │  -.0330789   .0417063    -0.79   0.428    -.1148799    .0487222
+    d_anioC5 │  -.0714969   .0469045    -1.52   0.128    -.1634934    .0204996
+    d_anioC6 │  -.0431593   .0649901    -0.66   0.507    -.1706281    .0843095
+    d_anioC7 │  -.0367221   .0817028    -0.45   0.653    -.1969705    .1235262
+      d_num2 │   .0327182   .0472074     0.69   0.488    -.0598723    .1253087
+      d_num3 │  -.0243868   .0327746    -0.74   0.457    -.0886695     .039896
+    d_junta2 │  -.0269992   .0395439    -0.68   0.495    -.1045589    .0505605
+    d_junta3 │   -.022353   .0343146    -0.65   0.515    -.0896561    .0449502
+    d_junta4 │   .2030221   .0378239     5.37   0.000      .128836    .2772082
+    d_junta5 │  -.0770956   .0351408    -2.19   0.028    -.1460192    -.008172
+       phase │   .0458371   .0501068     0.91   0.360    -.0524403    .1441145
+    _ws_calc │   .1203563   .0544094     2.21   0.027     .0136401    .2270724
+    __000009 │  -.3315913   .1245311    -2.66   0.008    -.5758413   -.0873413
+    __00000A │    .211233   .1531261     1.38   0.168    -.0891019    .5115679
+       _cons │  -.0018311   .0740556    -0.02   0.980    -.1470806    .1434184
+─────────────┴────────────────────────────────────────────────────────────────
+
+Probit regression                                       Number of obs =  1,723
+                                                        LR chi2(21)   =  71.21
+                                                        Prob > chi2   = 0.0000
+Log likelihood = -794.31657                             Pseudo R2     = 0.0429
+
+─────────────┬────────────────────────────────────────────────────────────────
+     p_actor │ Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+─────────────┼────────────────────────────────────────────────────────────────
+    time_hr2 │  -.1498465   .1421503    -1.05   0.292    -.4284559     .128763
+    time_hr3 │  -.3246086   .1193433    -2.72   0.007    -.5585172      -.0907
+    time_hr4 │  -.1549947   .1350881    -1.15   0.251    -.4197625    .1097731
+    time_hr5 │  -.2131818   .1259143    -1.69   0.090    -.4599692    .0336056
+    time_hr6 │  -.4922371   .1576595    -3.12   0.002    -.8012441   -.1832301
+    time_hr7 │  -.1306147   .1274426    -1.02   0.305    -.3803977    .1191683
+    time_hr8 │  -.0276497   .4711439    -0.06   0.953    -.9510748    .8957754
+        calc │   .1068747   .0775719     1.38   0.168    -.0451634    .2589128
+    d_anioC2 │   .3019069    .624342     0.48   0.629     -.921781    1.525595
+    d_anioC3 │   1.179845    .474199     2.49   0.013     .2504317    2.109258
+    d_anioC4 │   .7134898   .4653147     1.53   0.125    -.1985102     1.62549
+    d_anioC5 │   1.035221   .4364885     2.37   0.018     .1797198    1.890723
+    d_anioC6 │   1.368661   .4272626     3.20   0.001     .5312415     2.20608
+    d_anioC7 │   1.584779   .4390592     3.61   0.000     .7242388    2.445319
+      d_num2 │  -.6017508   .2553154    -2.36   0.018     -1.10216   -.1013418
+      d_num3 │  -.0228323   .1795138    -0.13   0.899    -.3746729    .3290083
+    d_junta2 │    .318422    .148337     2.15   0.032     .0276869     .609157
+    d_junta3 │   .1414814   .1488785     0.95   0.342    -.1503151    .4332779
+    d_junta4 │   .0247564   .1468863     0.17   0.866    -.2631355    .3126483
+    d_junta5 │   .2781593    .150309     1.85   0.064    -.0164409    .5727595
+       phase │  -.3287289   .1702145    -1.93   0.053    -.6623431    .0048854
+       _cons │  -1.855253   .5054313    -3.67   0.000    -2.845881   -.8646263
+─────────────┴────────────────────────────────────────────────────────────────
+
+Linear regression                               Number of obs     =      1,723
+                                                F(18, 1704)       =      17.91
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.1440
+                                                Root MSE          =     .33717
+
+─────────────┬────────────────────────────────────────────────────────────────
+             │               Robust
+  seconcilio │ Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+─────────────┼────────────────────────────────────────────────────────────────
+     p_actor │   .7673455    .204509     3.75   0.000     .3662304    1.168461
+        calc │   .0057069   .0177611     0.32   0.748     -.029129    .0405428
+    d_anioC2 │  -.0424614   .0246055    -1.73   0.085    -.0907216    .0057988
+    d_anioC3 │  -.1051994   .0578517    -1.82   0.069    -.2186672    .0082684
+    d_anioC4 │  -.0330789   .0417063    -0.79   0.428    -.1148799    .0487222
+    d_anioC5 │  -.0714969   .0469045    -1.52   0.128    -.1634934    .0204996
+    d_anioC6 │  -.0431593   .0649901    -0.66   0.507    -.1706281    .0843095
+    d_anioC7 │  -.0367221   .0817028    -0.45   0.653    -.1969705    .1235262
+      d_num2 │   .0327182   .0472074     0.69   0.488    -.0598723    .1253087
+      d_num3 │  -.0243868   .0327746    -0.74   0.457    -.0886695     .039896
+    d_junta2 │  -.0269992   .0395439    -0.68   0.495    -.1045589    .0505605
+    d_junta3 │   -.022353   .0343146    -0.65   0.515    -.0896561    .0449502
+    d_junta4 │   .2030221   .0378239     5.37   0.000      .128836    .2772082
+    d_junta5 │  -.0770956   .0351408    -2.19   0.028    -.1460192    -.008172
+       phase │   .0458371   .0501068     0.91   0.360    -.0524403    .1441145
+    _ws_calc │   .1203563   .0544094     2.21   0.027     .0136401    .2270724
+        _wL1 │  -.3315913   .1245311    -2.66   0.008    -.5758413   -.0873413
+        _wL0 │    .211233   .1531261     1.38   0.168    -.0891019    .5115679
+       _cons │  -.0018311   .0740556    -0.02   0.980    -.1470806    .1434184
+─────────────┴────────────────────────────────────────────────────────────────
+(1,723 real changes made)
+(1,401 missing values generated)
+(1,401 missing values generated)
+(322 missing values generated)
+(322 missing values generated)
+</pre>
+<p>The test for selection on un-observables is slightly different in
+this case <span class="math inline">\(H_0 : =0\)</span></p>
+<pre class='stata'>. test _b[_wL1]=_b[_wL0]=0
+
+ ( 1)  _wL1 - _wL0 = 0
+ ( 2)  _wL1 = 0
+
+       F(  2,  1704) =    3.60
+            Prob > F =    0.0275
+</pre>
+<h4 id="gmm-1">GMM</h4>
+<p>The parameter vector is <span class="math inline">\(\theta =
+(\beta_0^\prime, \beta_1^\prime,\gamma^\prime,
+\operatorname{atanh}\rho_0, \ln\sigma_0 ,\operatorname{atanh}\rho_1,
+\ln\sigma_1)\)</span>. Given the following identities</p>
+<p><span class="math display">\[ \mathbb{E}(y_j | t_j,x_j,w_j) =
+t_j(x_j\beta_1+\rho_1\sigma_1u_{t,j})+(1-t_j)(x_j\beta_0+\rho_0\sigma_0u_{t,j})\]</span>
+<span class="math display">\[\operatorname{Var}(y_j|t_j=0,x_j,w_j) =
+\sigma_0^2(1-\rho_0^2(u_{t,j}(u_{t,j}+w_j\gamma)))\]</span> <span
+class="math display">\[\operatorname{Var}(y_j|t_j=1,x_j,w_j) =
+\sigma_1^2(1-\rho_1^2(u_{t,j}(u_{t,j}+w_j\gamma)))\]</span></p>
+<p>we can obtain error functions for the outcome means and variances,
+and analogous to GMM in the constant-coefficient case, the estimator
+<span class="math inline">\(\hat{\theta}\)</span> is the value of <span
+class="math inline">\(\theta\)</span> that satisfies the sample moment
+condition.</p>
+<p>We further specify the option <code>poutcomes</code> in the
+<code>etregress</code> command to consider this model.</p>
+<pre class='stata'>. etregress seconcilio i.calc##i.p_actor d_anio* d_num* d_junta* phase , treat(p_actor = i.time_hr calc d_anio* d_nu
+> m* d_junta* phase)  cfunction  poutcomes vce(cluster cluster_v)  
+
+Iteration 0:   GMM criterion Q(b) =  6.059e-17  
+Iteration 1:   GMM criterion Q(b) =  4.149e-29  
+
+Linear regression with endogenous treatment              Number of obs = 1,723
+Estimator: Control function
+─────────────┬────────────────────────────────────────────────────────────────
+             │               Robust
+             │ Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+─────────────┼────────────────────────────────────────────────────────────────
+seconcilio   │
+      1.calc │   .0057069   .0187034     0.31   0.760    -.0309512     .042365
+   1.p_actor │   .6921141   .2289734     3.02   0.003     .2433346    1.140894
+             │
+calc#p_actor │
+        1 1  │   .1203562   .0558487     2.16   0.031     .0108948    .2298177
+             │
+    d_anioC2 │  -.0424614   .0363413    -1.17   0.243    -.1136891    .0287663
+    d_anioC3 │  -.1051994   .0688493    -1.53   0.127    -.2401416    .0297428
+    d_anioC4 │  -.0330789   .0470241    -0.70   0.482    -.1252445    .0590867
+    d_anioC5 │   -.071497   .0521163    -1.37   0.170     -.173643    .0306491
+    d_anioC6 │  -.0431594   .0699694    -0.62   0.537    -.1802969    .0939782
+    d_anioC7 │  -.0367222   .0890926    -0.41   0.680    -.2113404    .1378961
+      d_num2 │   .0327182   .0516134     0.63   0.526    -.0684423    .1338786
+      d_num3 │  -.0243868   .0381702    -0.64   0.523    -.0991989    .0504254
+    d_junta2 │  -.0269992   .0433536    -0.62   0.533    -.1119706    .0579723
+    d_junta3 │   -.022353   .0371911    -0.60   0.548    -.0952463    .0505403
+    d_junta4 │   .2030221   .0401943     5.05   0.000     .1242427    .2818015
+    d_junta5 │  -.0770956   .0381122    -2.02   0.043    -.1517941   -.0023971
+       phase │   .0458371   .0564584     0.81   0.417    -.0648193    .1564934
+       _cons │   -.001831   .0832735    -0.02   0.982    -.1650441    .1613821
+─────────────┼────────────────────────────────────────────────────────────────
+p_actor      │
+     time_hr │
+          2  │  -.1498465   .1419597    -1.06   0.291    -.4280823    .1283894
+          3  │  -.3246086    .117621    -2.76   0.006    -.5551415   -.0940757
+          4  │  -.1549947   .1344678    -1.15   0.249    -.4185468    .1085574
+          5  │  -.2131818   .1233851    -1.73   0.084    -.4550122    .0286485
+          6  │  -.4922371    .156751    -3.14   0.002    -.7994634   -.1850108
+          7  │  -.1306147   .1267074    -1.03   0.303    -.3789567    .1177273
+          8  │  -.0276497    .467419    -0.06   0.953    -.9437741    .8884747
+             │
+        calc │   .1068747   .0765838     1.40   0.163    -.0432269    .2569762
+    d_anioC2 │    .301908   .6127108     0.49   0.622    -.8989831    1.502799
+    d_anioC3 │   1.179846   .4641831     2.54   0.011     .2700635    2.089628
+    d_anioC4 │    .713491   .4529866     1.58   0.115    -.1743463    1.601328
+    d_anioC5 │   1.035223     .42749     2.42   0.015     .1973576    1.873088
+    d_anioC6 │   1.368662   .4153534     3.30   0.001     .5545843     2.18274
+    d_anioC7 │    1.58478   .4273026     3.71   0.000     .7472825    2.422278
+      d_num2 │  -.6017508   .2591102    -2.32   0.020    -1.109597   -.0939041
+      d_num3 │  -.0228323   .1725079    -0.13   0.895    -.3609416     .315277
+    d_junta2 │    .318422   .1476733     2.16   0.031     .0289876    .6078564
+    d_junta3 │   .1414814   .1487784     0.95   0.342    -.1501188    .4330816
+    d_junta4 │   .0247564   .1471047     0.17   0.866    -.2635636    .3130764
+    d_junta5 │   .2781593   .1505475     1.85   0.065    -.0169084     .573227
+       phase │  -.3287289   .1686924    -1.95   0.051      -.65936    .0019023
+       _cons │  -1.855255   .4915709    -3.77   0.000    -2.818716   -.8917934
+─────────────┼────────────────────────────────────────────────────────────────
+    /athrho0 │   -.767513   .7220589    -1.06   0.288    -2.182722    .6476964
+   /lnsigma0 │  -1.117034   .1273783    -8.77   0.000    -1.366691    -.867377
+    /athrho1 │   -.710334   .2810856    -2.53   0.012    -1.261252   -.1594164
+   /lnsigma1 │  -.6110074   .1172857    -5.21   0.000    -.8408831   -.3811317
+─────────────┼────────────────────────────────────────────────────────────────
+        rho0 │   -.645481   .4212162                      -.974901    .5701172
+      sigma0 │    .327249   .0416844                      .2549493    .4200519
+     lambda0 │   -.211233   .1640392                     -.5327439    .1102779
+        rho1 │  -.6108863   .1761895                     -.8514088   -.1580796
+      sigma1 │   .5428038   .0636631                      .4313295    .6830879
+     lambda1 │  -.3315914   .1340553                      -.594335   -.0688477
+─────────────┴────────────────────────────────────────────────────────────────
+Wald test of indep. (rho0 = rho1 = 0): chi2(2) =    6.40  Prob > chi2 = 0.0408
+</pre>
+<p>The Wald test reported in the footer indicates that we can reject the
+null hypothesis of no correlation between the EEV-assignment errors and
+the outcome errors for employee present or abscent. However, the 95%
+confidence interval for both <span class="math inline">\(\rho_0\)</span>
+and <span class="math inline">\(\rho_1\)</span> cover <span
+class="math inline">\(0\)</span>. I interpret this as absence of
+heterogeneity in unobservables.</p>
+<h4 id="maximum-likelihood-1">Maximum likelihood</h4>
+<p>Analogous to previous sections, we can derive a likelihood function
+to obtain estimates via ML.</p>
+<p><span class="math display">\[ ln L_j = t_j\left(ln
+\Phi\left\lbrace\frac{w_j\gamma+(y_j-x_j\beta_1)\rho_1/\sigma_1}{\sqrt{1-\rho_1^2}}\right\rbrace-\frac{1}{2}\left(\frac{y_j-x_j\beta_1}{\sigma_1}\right)^2-ln(\sqrt{2\pi}\sigma_1)\right)\]</span>
+<span class="math display">\[\quad\quad + (1-t_j)\left(ln
+\Phi\left\lbrace\frac{-w_j\gamma+(y_j-x_j\beta_0)\rho_0/\sigma_0}{\sqrt{1-\rho_0^2}}\right\rbrace-\frac{1}{2}\left(\frac{y_j-x_j\beta_0}{\sigma_0}\right)^2-ln(\sqrt{2\pi}\sigma_0)\right)\]</span></p>
+<pre><code>etregress seconcilio i.calc##i.p_actor d_anio* d_num* d_junta* phase , treat(p_actor = i.time_hr calc d_anio* d_num* d_junta* phase)  poutcomes vce(cluster cluster_v) </code></pre>
+<p>In our case, we do not achieve convergence, hence output is not
+shown.</p>
+<p>The joint normality assumption has some limitations, meaning that
+they are not robust to violation of this hypothesis. In the same
+potential outcomes framework, we assume that the binary-EEV follows
+wither a linear model, or a probit model.</p>
+<p><span class="math display">\[t_j = w_j\gamma + u_j\]</span> <span
+class="math display">\[t_j = 1[w_j\gamma + u_j&gt;0]\]</span></p>
+<pre class='stata'>. ivtreatreg seconcilio p_actor calc d_anio* d_num* d_junta* phase, model(probit-ols) iv(time_hr2-time_hr8) hetero(c
+> alc) vce(robust) 
+
+Probit regression                                       Number of obs =  1,723
+                                                        LR chi2(21)   =  71.21
+                                                        Prob > chi2   = 0.0000
+Log likelihood = -794.31657                             Pseudo R2     = 0.0429
+
+─────────────┬────────────────────────────────────────────────────────────────
+     p_actor │ Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+─────────────┼────────────────────────────────────────────────────────────────
+    time_hr2 │  -.1498465   .1421503    -1.05   0.292    -.4284559     .128763
+    time_hr3 │  -.3246086   .1193433    -2.72   0.007    -.5585172      -.0907
+    time_hr4 │  -.1549947   .1350881    -1.15   0.251    -.4197625    .1097731
+    time_hr5 │  -.2131818   .1259143    -1.69   0.090    -.4599692    .0336056
+    time_hr6 │  -.4922371   .1576595    -3.12   0.002    -.8012441   -.1832301
+    time_hr7 │  -.1306147   .1274426    -1.02   0.305    -.3803977    .1191683
+    time_hr8 │  -.0276497   .4711439    -0.06   0.953    -.9510748    .8957754
+        calc │   .1068747   .0775719     1.38   0.168    -.0451634    .2589128
+    d_anioC2 │   .3019069    .624342     0.48   0.629     -.921781    1.525595
+    d_anioC3 │   1.179845    .474199     2.49   0.013     .2504317    2.109258
+    d_anioC4 │   .7134898   .4653147     1.53   0.125    -.1985102     1.62549
+    d_anioC5 │   1.035221   .4364885     2.37   0.018     .1797198    1.890723
+    d_anioC6 │   1.368661   .4272626     3.20   0.001     .5312415     2.20608
+    d_anioC7 │   1.584779   .4390592     3.61   0.000     .7242388    2.445319
+      d_num2 │  -.6017508   .2553154    -2.36   0.018     -1.10216   -.1013418
+      d_num3 │  -.0228323   .1795138    -0.13   0.899    -.3746729    .3290083
+    d_junta2 │    .318422    .148337     2.15   0.032     .0276869     .609157
+    d_junta3 │   .1414814   .1488785     0.95   0.342    -.1503151    .4332779
+    d_junta4 │   .0247564   .1468863     0.17   0.866    -.2631355    .3126483
+    d_junta5 │   .2781593    .150309     1.85   0.064    -.0164409    .5727595
+       phase │  -.3287289   .1702145    -1.93   0.053    -.6623431    .0048854
+       _cons │  -1.855253   .5054313    -3.67   0.000    -2.845881   -.8646263
+─────────────┴────────────────────────────────────────────────────────────────
+
+Linear regression                               Number of obs     =      1,723
+                                                F(2, 1720)        =       9.04
+                                                Prob > F          =     0.0001
+                                                R-squared         =     0.0109
+                                                Root MSE          =     .36076
+
+─────────────┬────────────────────────────────────────────────────────────────
+             │               Robust
+  seconcilio │ Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+─────────────┼────────────────────────────────────────────────────────────────
+    __000001 │   .2807744   .1116901     2.51   0.012     .0617117    .4998371
+    __000004 │   .3070545   .0890155     3.45   0.001     .1324644    .4816445
+       _cons │   .1017282   .0216709     4.69   0.000      .059224    .1442323
+─────────────┴────────────────────────────────────────────────────────────────
+
+Probit regression                                       Number of obs =  1,723
+                                                        LR chi2(21)   =  71.21
+                                                        Prob > chi2   = 0.0000
+Log likelihood = -794.31657                             Pseudo R2     = 0.0429
+
+─────────────┬────────────────────────────────────────────────────────────────
+     p_actor │ Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+─────────────┼────────────────────────────────────────────────────────────────
+    time_hr2 │  -.1498465   .1421503    -1.05   0.292    -.4284559     .128763
+    time_hr3 │  -.3246086   .1193433    -2.72   0.007    -.5585172      -.0907
+    time_hr4 │  -.1549947   .1350881    -1.15   0.251    -.4197625    .1097731
+    time_hr5 │  -.2131818   .1259143    -1.69   0.090    -.4599692    .0336056
+    time_hr6 │  -.4922371   .1576595    -3.12   0.002    -.8012441   -.1832301
+    time_hr7 │  -.1306147   .1274426    -1.02   0.305    -.3803977    .1191683
+    time_hr8 │  -.0276497   .4711439    -0.06   0.953    -.9510748    .8957754
+        calc │   .1068747   .0775719     1.38   0.168    -.0451634    .2589128
+    d_anioC2 │   .3019069    .624342     0.48   0.629     -.921781    1.525595
+    d_anioC3 │   1.179845    .474199     2.49   0.013     .2504317    2.109258
+    d_anioC4 │   .7134898   .4653147     1.53   0.125    -.1985102     1.62549
+    d_anioC5 │   1.035221   .4364885     2.37   0.018     .1797198    1.890723
+    d_anioC6 │   1.368661   .4272626     3.20   0.001     .5312415     2.20608
+    d_anioC7 │   1.584779   .4390592     3.61   0.000     .7242388    2.445319
+      d_num2 │  -.6017508   .2553154    -2.36   0.018     -1.10216   -.1013418
+      d_num3 │  -.0228323   .1795138    -0.13   0.899    -.3746729    .3290083
+    d_junta2 │    .318422    .148337     2.15   0.032     .0276869     .609157
+    d_junta3 │   .1414814   .1488785     0.95   0.342    -.1503151    .4332779
+    d_junta4 │   .0247564   .1468863     0.17   0.866    -.2631355    .3126483
+    d_junta5 │   .2781593    .150309     1.85   0.064    -.0164409    .5727595
+       phase │  -.3287289   .1702145    -1.93   0.053    -.6623431    .0048854
+       _cons │  -1.855253   .5054313    -3.67   0.000    -2.845881   -.8646263
+─────────────┴────────────────────────────────────────────────────────────────
+
+Linear regression                               Number of obs     =      1,723
+                                                F(16, 1706)       =      20.20
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0790
+                                                Root MSE          =     .34955
+
+─────────────┬────────────────────────────────────────────────────────────────
+             │               Robust
+  seconcilio │ Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+─────────────┼────────────────────────────────────────────────────────────────
+        G_fv │    .725525   .2341433     3.10   0.002     .2662867    1.184763
+     _z_calc │    .192216   .2216613     0.87   0.386    -.2425406    .6269726
+        calc │  -.0085431   .0417925    -0.20   0.838     -.090513    .0734268
+    d_anioC2 │  -.0392612   .0240144    -1.63   0.102     -.086362    .0078395
+    d_anioC3 │  -.1316504   .0539316    -2.44   0.015    -.2374296   -.0258713
+    d_anioC4 │   -.039737   .0395722    -1.00   0.315    -.1173522    .0378781
+    d_anioC5 │  -.0874867   .0433222    -2.02   0.044     -.172457   -.0025165
+    d_anioC6 │  -.0603333   .0622265    -0.97   0.332    -.1823816     .061715
+    d_anioC7 │  -.0545568   .0819766    -0.67   0.506    -.2153421    .1062285
+      d_num2 │   .0395626   .0482428     0.82   0.412    -.0550586    .1341837
+      d_num3 │   -.023672    .032982    -0.72   0.473    -.0883614    .0410173
+    d_junta2 │  -.0299215   .0409111    -0.73   0.465    -.1101627    .0503197
+    d_junta3 │  -.0252928   .0355543    -0.71   0.477    -.0950274    .0444418
+    d_junta4 │   .2020332   .0386889     5.22   0.000     .1261506    .2779159
+    d_junta5 │  -.0816275    .037116    -2.20   0.028    -.1544251   -.0088299
+       phase │   .0486138   .0543042     0.90   0.371     -.057896    .1551237
+       _cons │  -.0022143   .0830666    -0.03   0.979    -.1651374    .1607088
+─────────────┴────────────────────────────────────────────────────────────────
+(1,723 real changes made)
+(1,401 missing values generated)
+(322 missing values generated)
+
+. 
+. 
+. ivtreatreg seconcilio p_actor calc d_anio* d_num* d_junta* phase, model(probit-2sls) iv(time_hr2-time_hr8) hetero(
+> calc) vce(robust)
+
+Iteration 0:   log likelihood = -829.92101  
+Iteration 1:   log likelihood = -795.35999  
+Iteration 2:   log likelihood = -794.32784  
+Iteration 3:   log likelihood = -794.31657  
+Iteration 4:   log likelihood = -794.31657  
+
+Probit regression                                       Number of obs =  1,723
+                                                        LR chi2(21)   =  71.21
+                                                        Prob > chi2   = 0.0000
+Log likelihood = -794.31657                             Pseudo R2     = 0.0429
+
+─────────────┬────────────────────────────────────────────────────────────────
+     p_actor │ Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+─────────────┼────────────────────────────────────────────────────────────────
+    time_hr2 │  -.1498465   .1421503    -1.05   0.292    -.4284559     .128763
+    time_hr3 │  -.3246086   .1193433    -2.72   0.007    -.5585172      -.0907
+    time_hr4 │  -.1549947   .1350881    -1.15   0.251    -.4197625    .1097731
+    time_hr5 │  -.2131818   .1259143    -1.69   0.090    -.4599692    .0336056
+    time_hr6 │  -.4922371   .1576595    -3.12   0.002    -.8012441   -.1832301
+    time_hr7 │  -.1306147   .1274426    -1.02   0.305    -.3803977    .1191683
+    time_hr8 │  -.0276497   .4711439    -0.06   0.953    -.9510748    .8957754
+        calc │   .1068747   .0775719     1.38   0.168    -.0451634    .2589128
+    d_anioC2 │   .3019069    .624342     0.48   0.629     -.921781    1.525595
+    d_anioC3 │   1.179845    .474199     2.49   0.013     .2504317    2.109258
+    d_anioC4 │   .7134898   .4653147     1.53   0.125    -.1985102     1.62549
+    d_anioC5 │   1.035221   .4364885     2.37   0.018     .1797198    1.890723
+    d_anioC6 │   1.368661   .4272626     3.20   0.001     .5312415     2.20608
+    d_anioC7 │   1.584779   .4390592     3.61   0.000     .7242388    2.445319
+      d_num2 │  -.6017508   .2553154    -2.36   0.018     -1.10216   -.1013418
+      d_num3 │  -.0228323   .1795138    -0.13   0.899    -.3746729    .3290083
+    d_junta2 │    .318422    .148337     2.15   0.032     .0276869     .609157
+    d_junta3 │   .1414814   .1488785     0.95   0.342    -.1503151    .4332779
+    d_junta4 │   .0247564   .1468863     0.17   0.866    -.2631355    .3126483
+    d_junta5 │   .2781593    .150309     1.85   0.064    -.0164409    .5727595
+       phase │  -.3287289   .1702145    -1.93   0.053    -.6623431    .0048854
+       _cons │  -1.855253   .5054313    -3.67   0.000    -2.845881   -.8646263
+─────────────┴────────────────────────────────────────────────────────────────
+
+Probit regression                                       Number of obs =  1,723
+                                                        LR chi2(21)   =  71.21
+                                                        Prob > chi2   = 0.0000
+Log likelihood = -794.31657                             Pseudo R2     = 0.0429
+
+─────────────┬────────────────────────────────────────────────────────────────
+     p_actor │ Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+─────────────┼────────────────────────────────────────────────────────────────
+    time_hr2 │  -.1498465   .1421503    -1.05   0.292    -.4284559     .128763
+    time_hr3 │  -.3246086   .1193433    -2.72   0.007    -.5585172      -.0907
+    time_hr4 │  -.1549947   .1350881    -1.15   0.251    -.4197625    .1097731
+    time_hr5 │  -.2131818   .1259143    -1.69   0.090    -.4599692    .0336056
+    time_hr6 │  -.4922371   .1576595    -3.12   0.002    -.8012441   -.1832301
+    time_hr7 │  -.1306147   .1274426    -1.02   0.305    -.3803977    .1191683
+    time_hr8 │  -.0276497   .4711439    -0.06   0.953    -.9510748    .8957754
+        calc │   .1068747   .0775719     1.38   0.168    -.0451634    .2589128
+    d_anioC2 │   .3019069    .624342     0.48   0.629     -.921781    1.525595
+    d_anioC3 │   1.179845    .474199     2.49   0.013     .2504317    2.109258
+    d_anioC4 │   .7134898   .4653147     1.53   0.125    -.1985102     1.62549
+    d_anioC5 │   1.035221   .4364885     2.37   0.018     .1797198    1.890723
+    d_anioC6 │   1.368661   .4272626     3.20   0.001     .5312415     2.20608
+    d_anioC7 │   1.584779   .4390592     3.61   0.000     .7242388    2.445319
+      d_num2 │  -.6017508   .2553154    -2.36   0.018     -1.10216   -.1013418
+      d_num3 │  -.0228323   .1795138    -0.13   0.899    -.3746729    .3290083
+    d_junta2 │    .318422    .148337     2.15   0.032     .0276869     .609157
+    d_junta3 │   .1414814   .1488785     0.95   0.342    -.1503151    .4332779
+    d_junta4 │   .0247564   .1468863     0.17   0.866    -.2631355    .3126483
+    d_junta5 │   .2781593    .150309     1.85   0.064    -.0164409    .5727595
+       phase │  -.3287289   .1702145    -1.93   0.053    -.6623431    .0048854
+       _cons │  -1.855253   .5054313    -3.67   0.000    -2.845881   -.8646263
+─────────────┴────────────────────────────────────────────────────────────────
+
+Instrumental variables 2SLS regression          Number of obs     =      1,723
+                                                F(16, 1706)       =       8.71
+                                                Prob > F          =     0.0000
+                                                R-squared         =          .
+                                                Root MSE          =     .37212
+
+─────────────┬────────────────────────────────────────────────────────────────
+             │               Robust
+  seconcilio │ Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+─────────────┼────────────────────────────────────────────────────────────────
+     p_actor │   .6353628   .2205259     2.88   0.004     .2028331    1.067892
+    _ws_calc │   .1403888   .2367772     0.59   0.553    -.3240154     .604793
+        calc │   .0032845   .0435282     0.08   0.940    -.0820897    .0886587
+    d_anioC2 │  -.0444774   .0388636    -1.14   0.253    -.1207028     .031748
+    d_anioC3 │  -.1084281   .0621215    -1.75   0.081    -.2302705    .0134142
+    d_anioC4 │  -.0380098    .046045    -0.83   0.409    -.1283205    .0523009
+    d_anioC5 │  -.0757585   .0467113    -1.62   0.105     -.167376     .015859
+    d_anioC6 │  -.0437583   .0612557    -0.71   0.475    -.1639025    .0763858
+    d_anioC7 │  -.0325549   .0793918    -0.41   0.682    -.1882704    .1231606
+      d_num2 │   .0317539   .0517552     0.61   0.540    -.0697565    .1332643
+      d_num3 │  -.0244799   .0376394    -0.65   0.516    -.0983042    .0493445
+    d_junta2 │  -.0245189   .0422555    -0.58   0.562     -.107397    .0583593
+    d_junta3 │  -.0227154   .0370365    -0.61   0.540     -.095357    .0499263
+    d_junta4 │    .202612   .0403758     5.02   0.000     .1234207    .2818033
+    d_junta5 │  -.0752309   .0371546    -2.02   0.043    -.1481042   -.0023575
+       phase │   .0393339   .0557588     0.71   0.481    -.0700289    .1486967
+       _cons │   .0005148   .0912949     0.01   0.996     -.178547    .1795766
+─────────────┴────────────────────────────────────────────────────────────────
+Instrumented: p_actor _ws_calc
+ Instruments: calc d_anioC2 d_anioC3 d_anioC4 d_anioC5 d_anioC6 d_anioC7
+              d_num2 d_num3 d_junta2 d_junta3 d_junta4 d_junta5 phase G_fv
+              _z_calc
+(1,723 real changes made)
+(1,401 missing values generated)
+(322 missing values generated)
+
+. 
+. 
+. ivtreatreg seconcilio p_actor calc d_anio* d_num* d_junta* phase , model(direct-2sls) iv(time_hr2-time_hr8) hetero
+> (calc) vce(robust)
+
+Instrumental variables 2SLS regression          Number of obs     =      1,723
+                                                F(16, 1706)       =       8.58
+                                                Prob > F          =     0.0000
+                                                R-squared         =          .
+                                                Root MSE          =     .37569
+
+─────────────┬────────────────────────────────────────────────────────────────
+             │               Robust
+  seconcilio │ Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+─────────────┼────────────────────────────────────────────────────────────────
+     p_actor │   .6574435   .2635553     2.49   0.013     .1405179    1.174369
+    _ws_calc │   .0973177   .0720643     1.35   0.177     -.044026    .2386614
+        calc │   .0104195   .0178668     0.58   0.560    -.0246237    .0454628
+    d_anioC2 │  -.0453706   .0399184    -1.14   0.256    -.1236648    .0329235
+    d_anioC3 │   -.114717   .0693601    -1.65   0.098    -.2507568    .0213229
+    d_anioC4 │  -.0386801   .0475924    -0.81   0.416    -.1320258    .0546655
+    d_anioC5 │  -.0796761   .0525476    -1.52   0.130    -.1827406    .0233884
+    d_anioC6 │  -.0494025   .0716115    -0.69   0.490    -.1898582    .0910531
+    d_anioC7 │  -.0402598   .0930377    -0.43   0.665    -.2227398    .1422203
+      d_num2 │   .0349162   .0527813     0.66   0.508    -.0686068    .1384392
+      d_num3 │  -.0247059    .037995    -0.65   0.516    -.0992276    .0498159
+    d_junta2 │  -.0253328   .0442223    -0.57   0.567    -.1120684    .0614029
+    d_junta3 │  -.0227103   .0372925    -0.61   0.543    -.0958541    .0504336
+    d_junta4 │   .2030992   .0405302     5.01   0.000     .1236051    .2825932
+    d_junta5 │  -.0764175   .0388335    -1.97   0.049    -.1525837   -.0002513
+       phase │   .0429069   .0574868     0.75   0.456    -.0698451     .155659
+       _cons │  -.0068533   .0828931    -0.08   0.934    -.1694362    .1557296
+─────────────┴────────────────────────────────────────────────────────────────
+Instrumented: p_actor _ws_calc
+ Instruments: calc d_anioC2 d_anioC3 d_anioC4 d_anioC5 d_anioC6 d_anioC7
+              d_num2 d_num3 d_junta2 d_junta3 d_junta4 d_junta5 phase
+              time_hr2 time_hr3 time_hr4 time_hr5 time_hr6 time_hr7 time_hr8
+              _z_calc
+(1,723 real changes made)
+(1,401 missing values generated)
+(322 missing values generated)
+</pre>
+<div id="refs" class="references csl-bib-body hanging-indent"
+role="doc-bibliography">
+<div id="ref-cerulli" class="csl-entry" role="doc-biblioentry">
+Cerulli, Giovanni. 2014. <span>“Ivtreatreg: A Command for Fitting Binary
+Treatment Models with Heterogeneous Response to Treatment and
+Unobservable Selection.”</span> <em>The Stata Journal</em> 14 (3):
+453–80. <a
+href="https://doi.org/10.1177/1536867X1401400301">https://doi.org/10.1177/1536867X1401400301</a>.
+</div>
+<div id="ref-maddala_1983" class="csl-entry" role="doc-biblioentry">
+Maddala, G. S. 1983. <span>“Two-Stage Estimation Methods.”</span> In
+<em>Limited-Dependent and Qualitative Variables in Econometrics</em>,
+221–56. Econometric Society Monographs. Cambridge University Press. <a
+href="https://doi.org/10.1017/CBO9780511810176.010">https://doi.org/10.1017/CBO9780511810176.010</a>.
+</div>
+<div id="ref-sadka" class="csl-entry" role="doc-biblioentry">
+Sadka, Joyce, Enrique Seira, and Christopher Woodruff. 2018.
+<span>“Information and Bargaining Through Agents: Experimental Evidence
+from Mexico’s Labor Courts.”</span> Working Paper 25137. Working Paper
+Series. National Bureau of Economic Research. <a
+href="https://doi.org/10.3386/w25137">https://doi.org/10.3386/w25137</a>.
+</div>
+<div id="ref-Wooldridge" class="csl-entry" role="doc-biblioentry">
+Wooldridge, Jeffrey M. 2015. <span>“Control Function Methods in Applied
+Econometrics.”</span> <em>The Journal of Human Resources</em> 50 (2):
+420–45. <a
+href="http://www.jstor.org/stable/24735991">http://www.jstor.org/stable/24735991</a>.
+</div>
+</div>
+</body>
+</html>
