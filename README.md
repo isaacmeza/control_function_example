@@ -1,10 +1,6 @@
 
 ---
-title: "Control Function Methods"
-author: "Isaac M"
-date: "10/03/2022"
-output: html_document
-bibliography: References.bib  
+# "Control Function Methods"
 ---
 
 
